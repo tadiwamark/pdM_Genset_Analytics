@@ -55,7 +55,7 @@ def main():
   # Get API Key for GPT-3.5
   if not st.session_state.get('api_key'):
     st.session_state.api_key = st.sidebar.text_input("Enter your OpenAI API Key:")
-      if st.session_state.api_key:
+    if st.session_state.api_key:
         openai.api_key = st.session_state.api_key
 
 
