@@ -138,3 +138,9 @@ def create_sequences(data, seq_length):
     xs.append(sequence)
   return np.array(xs)
 
+def load_model_from_github(url):
+    filename = url.split('/')[-1]
+    urllib.request.urlretrieve(url, filename)
+    loaded_model = tf.keras.models.load_model(filename)
+    return loaded_model
+
