@@ -138,3 +138,8 @@ def main():
 
   else:
       st.write("Generator is currently OFF. Use the sidebar to start the generator.")
+
+
+
+if __name__ == "__main__":
+    main()
