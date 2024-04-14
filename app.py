@@ -30,10 +30,6 @@ discriminator_path = 'https://github.com/tadiwamark/pdM_Genset_Analytics/release
 
 
 
-numerical_features = data.select_dtypes(include=['int64', 'float64']).columns.tolist()
-domain_features = ['Load_Factor', 'Temp_Gradient', 'Pressure_Ratio', 'Imbalance_Current','Power_Factor_Deviation']
-numerical_features += domain_features
-
 # Load Model
 generator = load_model_from_github(generator_path)
 discriminator = load_model_from_github(discriminator_path)
@@ -74,8 +70,11 @@ def main():
       # Simulate data generation for 3 hours
       simulated_data_df = generate_continuous_data(start_time, 3)
 
-      # Normalize the data
+      numerical_features = simulated_data_df.select_dtypes(include=['int64', 'float64']).columns.tolist()
+      domain_features = ['Load_Factor', 'Temp_Gradient', 'Pressure_Ratio', 'Imbalance_Current','Power_Factor_Deviation']
+      numerical_features += domain_features
 
+      # Normalize the data
       with gzip.open(scaler_path, 'rb') as scaler_file:
         scaler = pickle.load(scaler_file)
 
