@@ -25,8 +25,8 @@ from model_utils import detect_anomalies, generate_diagnosis_and_recommendation,
 
 # Paths to files
 scaler_path = '/content/drive/My Drive/Colab Notebooks/Final_Year_Project/scaler.gz'
-generator_path = '/content/drive/My Drive/Colab Notebooks/Final_Year_Project/generator.h5'
-discriminator_path = '/content/drive/My Drive/Colab Notebooks/Final_Year_Project/discriminator.h5'
+generator_path = 'https://github.com/tadiwamark/pdM_Genset_Analytics/releases/download/gan/generator_model.h5'
+discriminator_path = 'https://github.com/tadiwamark/pdM_Genset_Analytics/releases/download/gan/discriminator_model.h5'
 
 
 
@@ -35,8 +35,8 @@ domain_features = ['Load_Factor', 'Temp_Gradient', 'Pressure_Ratio', 'Imbalance_
 numerical_features += domain_features
 
 # Load Model
-generator = load_model(generator_path)
-discriminator = load_model(discriminator_path)
+generator = load_model_from_github(generator_path)
+discriminator = load_model_from_github(discriminator_path)
 
 
 
