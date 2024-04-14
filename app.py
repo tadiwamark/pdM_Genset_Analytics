@@ -17,16 +17,13 @@ import pickle
 import openai
 import os
 from generator_script import generate_continuous_data
-from model_utils import detect_anomalies, generate_diagnosis_and_recommendation, generate_prompts_from_anomalies, inverse_transform, create_sequences
+from model_utils import detect_anomalies, generate_diagnosis_and_recommendation, generate_prompts_from_anomalies, inverse_transform, create_sequences, load_model_from_github
 
 
 
-# Mount Google Drive
-from google.colab import drive
-drive.mount('/content/drive')
 
 
-# Path to your files
+# Paths to files
 scaler_path = '/content/drive/My Drive/Colab Notebooks/Final_Year_Project/scaler.gz'
 generator_path = '/content/drive/My Drive/Colab Notebooks/Final_Year_Project/generator.h5'
 discriminator_path = '/content/drive/My Drive/Colab Notebooks/Final_Year_Project/discriminator.h5'
