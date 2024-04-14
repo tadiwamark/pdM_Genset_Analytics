@@ -93,11 +93,10 @@ def main():
       scaled_data_seq = create_sequences(scaled_data, sequence_length)
 
       for _, row in simulated_data_df.iterrows():
+          # Display simulated data
+          data_placeholder.dataframe(row.to_frame().T)
 
-        # Display simulated data
-        data_placeholder.dataframe(row.to_frame().T)
-
-        # Detect anomalies in the simulated data
+          # Detect anomalies in the simulated data
 
           optimal_threshold = 0.7
 
