@@ -21,9 +21,6 @@ from model_utils import detect_anomalies, generate_diagnosis_and_recommendation,
 
 
 
-client = OpenAI()
-
-
 # Mount Google Drive
 from google.colab import drive
 drive.mount('/content/drive')
