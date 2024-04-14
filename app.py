@@ -15,7 +15,6 @@ import gzip
 from keras.models import load_model
 import pickle
 import openai
-from openai import OpenAI
 import os
 from generator_script import generate_continuous_data
 from model_utils import detect_anomalies, generate_diagnosis_and_recommendation, generate_prompts_from_anomalies, inverse_transform, create_sequences
