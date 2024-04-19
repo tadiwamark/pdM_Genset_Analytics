@@ -149,3 +149,23 @@ def load_model_from_github(url):
 
     return loaded_model
 
+def download_and_load_scaler(url):
+    """
+    Downloads a scaler from the given URL and loads it using pickle.
+    
+    Parameters:
+        url (str): The URL to download the scaler from.
+        
+    Returns:
+        scaler (sklearn.preprocessing.StandardScaler): The loaded scaler.
+    """
+    # Send a GET request to the URL
+    response = requests.get(url)
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Load the scaler from the content of the response
+        scaler = pickle.loads(response.content)
+        return scaler
+    else:
+        st.error('Failed to download the scaler file.')
+        return None
