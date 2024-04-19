@@ -13,7 +13,7 @@ import tensorflow as tf
 import time
 import urllib.request
 from transformer_encoder_block import TransformerEncoderBlock
-
+import gzip
 
 
 
@@ -151,21 +151,26 @@ def load_model_from_github(url):
 
 def download_and_load_scaler(url):
     """
-    Downloads a scaler from the given URL and loads it using pickle.
+    Downloads a compressed (.gz) scaler from the given URL, decompresses it, and loads it using pickle.
     
     Parameters:
-        url (str): The URL to download the scaler from.
+        url (str): The URL to download the compressed scaler from.
         
     Returns:
         scaler (sklearn.preprocessing.StandardScaler): The loaded scaler.
     """
-    # Send a GET request to the URL
-    response = requests.get(url)
-    # Check if the request was successful
-    if response.status_code == 200:
-        # Load the scaler from the content of the response
-        scaler = pickle.loads(response.content)
-        return scaler
-    else:
-        st.error('Failed to download the scaler file.')
-        return None
+    try:
+        # Send a GET request to download the file
+        response = requests.get(url)
+        response.raise_for_status()  # Check if the request was successful
+
+        # Decompress and load the scaler
+        with gzip.GzipFile(fileobj=response.raw) as gz:
+            scaler = pickle.load(gz)
+            return scaler
+    except requests.RequestException as e:
+        st.error(f'Failed to download the scaler file: {e}')
+    except Exception as e:
+        st.error(f'An error occurred while loading the scaler: {e}')
+
+    return None
