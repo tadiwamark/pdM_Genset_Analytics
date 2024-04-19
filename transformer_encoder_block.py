@@ -7,14 +7,12 @@ Created on Fri Apr 19 09:47:43 2024
 import tensorflow as tf
 from tensorflow.keras import layers
 
-
-
 class TransformerEncoderBlock(tf.keras.layers.Layer):
     def __init__(self, embed_dim, num_heads, ff_dim, rate=0.1):
         super(TransformerEncoderBlock, self).__init__()
         self.att = layers.MultiHeadAttention(num_heads=num_heads, key_dim=embed_dim)
         self.ffn = tf.keras.Sequential(
-            [layers.Dense(ff_dim, activation="relu"), layers.Dense(embed_dim),]
+            [layers.Dense(ff_dim, activation="relu"), layers.Dense(embed_dim)]
         )
         self.layernorm1 = layers.LayerNormalization(epsilon=1e-6)
         self.layernorm2 = layers.LayerNormalization(epsilon=1e-6)
