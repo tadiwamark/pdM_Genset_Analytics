@@ -20,7 +20,7 @@ import urllib.request
 from datetime import datetime
 from generator_script import generate_continuous_data
 from model_utils import detect_anomalies, generate_diagnosis_and_recommendation, generate_prompts_from_anomalies, inverse_transform, create_sequences, load_model_from_github
-
+from sklearn.preprocessing import StandardScaler
 
 
 
@@ -77,10 +77,11 @@ def main():
       numerical_features += domain_features
 
       # Normalize the data
-      with gzip.open(scaler_path, 'rb') as scaler_file:
-        scaler = pickle.load(scaler_file)
+      # Create an instance of StandardScaler
+      scaler = StandardScaler()
 
-      scaled_data = scaler.transform(simulated_data_df)
+      # Fit and transform the data
+      scaled_data = scaler.fit_transform(simulated_data_df)
 
       sequence_length = 10
 
