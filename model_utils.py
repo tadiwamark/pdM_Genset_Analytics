@@ -153,27 +153,20 @@ def load_model_from_github(url):
     return loaded_model
 
 def download_and_load_scaler(url):
-    """
-    Downloads a compressed (.gz) scaler from the given URL, decompresses it, and loads it using pickle.
-    
-    Parameters:
-        url (str): The URL to download the compressed scaler from.
-        
-    Returns:
-        scaler (sklearn.preprocessing.StandardScaler): The loaded scaler.
-    """
     try:
-        # Send a GET request to download the file
-        response = requests.get(url)
-        response.raise_for_status()  # Check if the request was successful
+        # Send a GET request to download the file, ensure stream=True for proper handling of the response
+        response = requests.get(url, stream=True)
+        response.raise_for_status()  # This will raise an HTTPError if the HTTP request returned an unsuccessful status code
 
-        # Decompress and load the scaler
-        with gzip.GzipFile(fileobj=response.raw) as gz:
+        # Ensure we read the response in binary mode
+        with gzip.open(response.raw, 'rb') as gz:
             scaler = pickle.load(gz)
             return scaler
     except requests.RequestException as e:
-        st.error(f'Failed to download the scaler file: {e}')
+        print(f"HTTP Request failed: {e}")
+    except EOFError as e:
+        print(f"EOF Error: The file may be corrupted: {e}")
     except Exception as e:
-        st.error(f'An error occurred while loading the scaler: {e}')
+        print(f"An error occurred: {e}")
 
     return None
