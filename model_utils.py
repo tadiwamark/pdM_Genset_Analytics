@@ -21,53 +21,18 @@ from sklearn.preprocessing import StandardScaler
 
 
 # Anomaly detection
-def detect_anomalies(generator, discriminator, data, threshold=0.2):
-    
-    
-    # Identify numerical features
-
-    numerical_features = data.select_dtypes(include=['int64', 'float64']).columns.tolist()
-
-    domain_features = ['Load_Factor', 'Temp_Gradient', 'Pressure_Ratio', 'Imbalance_Current','Power_Factor_Deviation']
-    numerical_features += domain_features
-
-
-    # Normalize the data
-    scaler = StandardScaler()
-    scaled_data = scaler.fit_transform(data[numerical_features])
-
-    # Check if scaled_data contains any NaN values
-    assert not np.isnan(scaled_data).any(), "Scaled data contains NaN after scaling"
-    assert not np.isinf(scaled_data).any(), "Scaled data contains Inf after scaling"
-
-    features = scaled_data.shape[1]
-
-    sequence_length = 10
-
-    def create_sequences(data, seq_length):
-        xs = []
-        for i in range(len(data) - seq_length):
-            sequence = data[i:(i + seq_length)]
-            xs.append(sequence)
-        return np.array(xs)
-
-    scaled_data_seq = create_sequences(scaled_data, sequence_length)
-
-
-    features = scaled_data.shape[1]
-
-
+def detect_anomalies(generator, discriminator, real_data, threshold=0.5):
     # Generate fake sequences
-    batch_size = data.shape[0]
+    batch_size = real_data.shape[0]
     random_latent_vectors = tf.random.normal(shape=(batch_size, sequence_length, features))
     generated_sequences = generator.predict(random_latent_vectors)
 
     # Get discriminator predictions for both real and fake data
-    real_predictions = discriminator.predict(data)
+    real_predictions = discriminator.predict(real_data)
     fake_predictions = discriminator.predict(generated_sequences)
 
     # Identify real sequences that are classified as fake
-    anomalies = data[real_predictions.flatten() < threshold]
+    anomalies = real_data[real_predictions.flatten() < threshold]
 
     return anomalies, real_predictions, fake_predictions
 
