@@ -21,7 +21,9 @@ from sklearn.preprocessing import StandardScaler
 
 
 # Anomaly detection
-def detect_anomalies(generator, discriminator, data, threshold=0.5):
+def detect_anomalies(generator, discriminator, data, threshold=0.2):
+    
+    
     # Identify numerical features
 
     numerical_features = data.select_dtypes(include=['int64', 'float64']).columns.tolist()
@@ -37,6 +39,8 @@ def detect_anomalies(generator, discriminator, data, threshold=0.5):
     # Check if scaled_data contains any NaN values
     assert not np.isnan(scaled_data).any(), "Scaled data contains NaN after scaling"
     assert not np.isinf(scaled_data).any(), "Scaled data contains Inf after scaling"
+
+    features = scaled_data.shape[1]
 
     sequence_length = 10
 
