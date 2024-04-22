@@ -20,6 +20,9 @@ import streamlit as st
 from sklearn.preprocessing import StandardScaler
 
 
+# Model hyperparameters
+sequence_length = 10
+
 # Anomaly detection
 def detect_anomalies(generator, discriminator, real_data, threshold=0.5):
     # Generate fake sequences
