@@ -130,7 +130,7 @@ def main():
 
           features = scaled_data.shape[1]
 
-          anomalies, real_predictions, fake_predictions = detect_anomalies(generator, discriminator, scaled_data_seq, threshold=0.5, features)
+          anomalies, real_predictions, fake_predictions = detect_anomalies(generator, discriminator, data, features, threshold=0.5)
 
           real_predictions = discriminator.predict(scaled_data_seq)
 
