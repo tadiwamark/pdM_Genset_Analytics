@@ -119,6 +119,8 @@ def main():
       sequence_length = 10
 
       scaled_data_seq = create_sequences(scaled_data, sequence_length)
+      required_features = scaled_data.columns[:25]  
+      scaled_data_seq = scaled_data[required_features]
 
       for _, row in simulated_data_df.iterrows():
           # Display simulated data
