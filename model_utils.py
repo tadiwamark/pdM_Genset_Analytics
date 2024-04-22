@@ -17,7 +17,7 @@ import gzip
 import requests
 import pickle
 import streamlit as st
-
+from sklearn.preprocessing import StandardScaler
 
 
 # Anomaly detection
