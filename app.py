@@ -13,6 +13,7 @@ import numpy as np
 import time
 import gzip
 from keras.models import load_model
+import requests
 import pickle
 import openai
 import os
