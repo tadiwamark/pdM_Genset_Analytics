@@ -26,7 +26,7 @@ from sklearn.preprocessing import StandardScaler
 
 
 # Paths to files
-scaler_path = '/content/drive/My Drive/Colab Notebooks/Final_Year_Project/scaler.gz'
+scaler_path = 'https://github.com/tadiwamark/pdM_Genset_Analytics/releases/download/gan/scaler.gz'
 generator_path = 'https://github.com/tadiwamark/pdM_Genset_Analytics/releases/download/gan/generator_model.h5'
 discriminator_path = 'https://github.com/tadiwamark/pdM_Genset_Analytics/releases/download/gan/discriminator_model.h5'
 
@@ -89,8 +89,9 @@ def main():
       numerical_features += domain_features
 
       # Normalize the data
+      scaler_url = scaler_path
       # Create an instance of StandardScaler
-      scaler = StandardScaler()
+      scaler = download_and_load_scaler(scaler_url)
 
       # Fit and transform the data
       scaled_data = scaler.fit_transform(simulated_data_df)
