@@ -154,19 +154,12 @@ def load_model_from_github(url):
 
 def download_and_load_scaler(url):
     try:
-        # Send a GET request to download the file, ensure stream=True for proper handling of the response
         response = requests.get(url, stream=True)
-        response.raise_for_status()  # This will raise an HTTPError if the HTTP request returned an unsuccessful status code
-
-        # Ensure we read the response in binary mode
+        response.raise_for_status()
         with gzip.open(response.raw, 'rb') as gz:
             scaler = pickle.load(gz)
-            return scaler
-    except requests.RequestException as e:
-        print(f"HTTP Request failed: {e}")
-    except EOFError as e:
-        print(f"EOF Error: The file may be corrupted: {e}")
+            return scaler  # Ensure this is a scaler object
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"Failed to download or load the scaler: {e}")
+        return None
 
-    return None
