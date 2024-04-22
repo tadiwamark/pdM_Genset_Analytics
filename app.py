@@ -128,7 +128,9 @@ def main():
 
           optimal_threshold = 0.7
 
-          anomalies, real_predictions, fake_predictions = detect_anomalies(generator, discriminator, scaled_data_seq, threshold=0.5)
+          features = scaled_data.shape[1]
+
+          anomalies, real_predictions, fake_predictions = detect_anomalies(generator, discriminator, scaled_data_seq, threshold=0.5, features)
 
           real_predictions = discriminator.predict(scaled_data_seq)
 
