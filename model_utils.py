@@ -15,7 +15,7 @@ import urllib.request
 from transformer_encoder_block import TransformerEncoderBlock
 import gzip
 import requests
-
+import pickle
 
 
 # Anomaly detection
