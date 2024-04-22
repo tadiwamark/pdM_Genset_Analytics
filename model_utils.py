@@ -23,13 +23,19 @@ from sklearn.preprocessing import StandardScaler
 # Model hyperparameters
 sequence_length = 10
 
+
 # Anomaly detection
-def detect_anomalies(generator, discriminator, real_data, features, threshold=0.5):
-    # Generate fake sequences
-    required_features = real_data.columns[:25]  # Modify as needed to match the specific features expected
-    batch = batch_size[required_features]
-    batch_size = batch.shape[0]
+def detect_anomalies(generator, discriminator, real_data, numerical_features, features, threshold=0.5):
     
+    
+    # Convert scaled data to DataFrame
+    scaled_data_df = pd.DataFrame(real_data, columns=numerical_features)
+
+    required_features = scaled_data_df.columns[:25]  # This now works because scaled_data_df is a DataFrame
+    scaled_data_seq = scaled_data_df[required_features].values
+    
+    # Generate fake sequences
+    batch_size = scaled_data_seq.shape[0]
     random_latent_vectors = tf.random.normal(shape=(batch_size, sequence_length, features))
     generated_sequences = generator.predict(random_latent_vectors)
 
