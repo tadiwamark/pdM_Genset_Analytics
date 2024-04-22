@@ -100,12 +100,14 @@ def main():
       numerical_features += domain_features
 
       # Normalize the data
-      scaler_url = scaler_path
-      # Create an instance of StandardScaler
-      scaler = download_and_load_scaler(scaler_url)
+      scaler = StandardScaler()
+      scaled_data = scaler.fit_transform(genset_data[numerical_features])
 
-      # Fit and transform the data
-      scaled_data = scaler.transform(simulated_data_df)
+      # Double-check if scaled_data contains any NaN values
+      assert not np.isnan(scaled_data).any(), "Scaled data contains NaN after re-scaling"
+      assert not np.isinf(scaled_data).any(), "Scaled data contains Inf after re-scaling"
+
+      
 
       sequence_length = 10
 
