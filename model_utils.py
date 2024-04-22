@@ -22,6 +22,9 @@ from sklearn.preprocessing import StandardScaler
 
 # Anomaly detection
 def detect_anomalies(generator, discriminator, data, threshold=0.5):
+    # Identify numerical features
+
+    numerical_features = data.select_dtypes(include=['int64', 'float64']).columns.tolist()
 
     domain_features = ['Load_Factor', 'Temp_Gradient', 'Pressure_Ratio', 'Imbalance_Current','Power_Factor_Deviation']
     numerical_features += domain_features
