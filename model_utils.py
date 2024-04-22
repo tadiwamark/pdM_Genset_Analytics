@@ -26,7 +26,10 @@ sequence_length = 10
 # Anomaly detection
 def detect_anomalies(generator, discriminator, real_data, features, threshold=0.5):
     # Generate fake sequences
-    batch_size = real_data.shape[0]
+    required_features = real_data.columns[:25]  # Modify as needed to match the specific features expected
+    batch = batch_size[required_features]
+    batch_size = batch.shape[0]
+    
     random_latent_vectors = tf.random.normal(shape=(batch_size, sequence_length, features))
     generated_sequences = generator.predict(random_latent_vectors)
 
