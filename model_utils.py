@@ -24,7 +24,7 @@ from sklearn.preprocessing import StandardScaler
 sequence_length = 10
 
 # Anomaly detection
-def detect_anomalies(generator, discriminator, data, features, threshold=0.5):
+def detect_anomalies(generator, discriminator, real_data, features, threshold=0.5):
     # Generate fake sequences
     batch_size = real_data.shape[0]
     random_latent_vectors = tf.random.normal(shape=(batch_size, sequence_length, features))
