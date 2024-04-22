@@ -95,7 +95,7 @@ def main():
       scaler = download_and_load_scaler(scaler_url)
 
       # Fit and transform the data
-      scaled_data = scaler.fit_transform(simulated_data_df)
+      scaled_data = scaler.transform(simulated_data_df)
 
       sequence_length = 10
 
