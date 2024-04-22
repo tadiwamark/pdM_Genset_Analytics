@@ -72,6 +72,18 @@ def main():
       # Simulate data generation for 3 hours
       simulated_data_df = generate_continuous_data(start_time, 3)
 
+      simulated_data_df = simulated_data_df.astype(float).fillna(simulated_data_df.mean())
+
+      if simulated_data_df.empty:
+          print("The DataFrame is empty.")
+      else:
+          print("The DataFrame has data.")
+
+
+
+
+
+
       numerical_features = simulated_data_df.select_dtypes(include=['int64', 'float64']).columns.tolist()
       domain_features = ['Load_Factor', 'Temp_Gradient', 'Pressure_Ratio', 'Imbalance_Current','Power_Factor_Deviation']
       numerical_features += domain_features
