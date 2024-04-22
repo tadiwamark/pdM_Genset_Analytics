@@ -25,7 +25,7 @@ def detect_anomalies(generator, discriminator, data, threshold=0.5):
 
 
     # Scale the data
-
+    scaler = StandardScaler()
     scaled_data = scaler.transform(data[numerical_features])
 
     # Check if scaled_data contains any NaN values
