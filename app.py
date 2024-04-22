@@ -74,7 +74,16 @@ def main():
       # Simulate data generation for 3 hours
       simulated_data_df = generate_continuous_data(start_time, end_time)
 
-      simulated_data_df = simulated_data_df.astype(float).fillna(simulated_data_df.mean())
+      numeric_columns = simulated_data_df.select_dtypes(include=[np.number])
+
+      if not numeric_columns.empty:
+          numeric_columns = numeric_columns.astype(float).fillna(numeric_columns.mean())
+          # Merge back the numeric columns to the main DataFrame
+          for column in numeric_columns:
+              simulated_data_df[column] = numeric_columns[column]
+
+
+      
 
       if simulated_data_df.empty:
           print("The DataFrame is empty.")
