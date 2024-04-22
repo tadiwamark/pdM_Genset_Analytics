@@ -101,7 +101,7 @@ def main():
 
       # Normalize the data
       scaler = StandardScaler()
-      scaled_data = scaler.fit_transform(genset_data[numerical_features])
+      scaled_data = scaler.fit_transform(simulated_data_df[numerical_features])
 
       # Double-check if scaled_data contains any NaN values
       assert not np.isnan(scaled_data).any(), "Scaled data contains NaN after re-scaling"
