@@ -70,8 +70,9 @@ def main():
 
   if st.session_state['generator_on']:
       start_time = datetime.now()
+      end_time = start_time + timedelta(hours=3)
       # Simulate data generation for 3 hours
-      simulated_data_df = generate_continuous_data(start_time, 3)
+      simulated_data_df = generate_continuous_data(start_time, end_time)
 
       simulated_data_df = simulated_data_df.astype(float).fillna(simulated_data_df.mean())
 
