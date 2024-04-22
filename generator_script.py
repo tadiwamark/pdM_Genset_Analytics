@@ -33,11 +33,13 @@ def simulate_anomalies(simulated_data):
     return simulated_data, anomaly_type
 
 def generate_continuous_data(start_time, end_time, interval='1min'):
-    """
-    Generates continuous simulated data between start_time and end_time at the specified interval.
-    """
+    print(f"Generating data from {start_time} to {end_time} with interval {interval}")
     time_range = pd.date_range(start=start_time, end=end_time, freq=interval)
     data_records = []
+
+    if time_range.empty:
+        print("The time range is empty. Check your start and end times.")
+        return pd.DataFrame()  # Return an empty DataFrame immediately
 
     for current_time in time_range:
         simulated_data = {
@@ -63,13 +65,13 @@ def generate_continuous_data(start_time, end_time, interval='1min'):
             'Phase3Voltage(V)': generate_parameter_value(150, 650),
             'Load kW' : generate_parameter_value(1500, 6500),
             'Load %' : generate_parameter_value(50, 100),
-
         }
-
         simulated_data, anomaly_type = simulate_anomalies(simulated_data)
         simulated_data['Anomaly_Type'] = anomaly_type
         data_records.append(simulated_data)
 
     simulated_df = pd.DataFrame(data_records)
+    print(f"Generated {len(data_records)} records.")
     return simulated_df
+
 
