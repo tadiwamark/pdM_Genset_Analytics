@@ -114,13 +114,16 @@ def main():
       assert not np.isnan(scaled_data).any(), "Scaled data contains NaN after re-scaling"
       assert not np.isinf(scaled_data).any(), "Scaled data contains Inf after re-scaling"
 
+      # Convert scaled data to DataFrame
+      scaled_data_df = pd.DataFrame(scaled_data, columns=numerical_features)
+
       
 
       sequence_length = 10
 
-      scaled_data_seq = create_sequences(scaled_data, sequence_length)
-      required_features = scaled_data.columns[:25]  
-      scaled_data_seq = scaled_data[required_features]
+      scaled_data_seq = create_sequences(scaled_data_df, sequence_length)
+      required_features = scaled_data_df.columns[:25]  # This now works because scaled_data_df is a DataFrame
+      scaled_data_seq = scaled_data_df[required_features].values
 
       for _, row in simulated_data_df.iterrows():
           # Display simulated data
