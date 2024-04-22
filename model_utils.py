@@ -115,12 +115,17 @@ def generate_prompts_from_anomalies(df):
 def inverse_transform(scaled_data, scaler):
   return scaler.inverse_transform(scaled_data)
 
-def create_sequences(data, seq_length):
-  xs = []
-  for i in range(len(data) - seq_length):
-    sequence = data[i:(i + seq_length)]
-    xs.append(sequence)
-  return np.array(xs)
+def create_sequences(data, sequence_length):
+    """
+    Creates sequences from the data.
+    :param data: Input data, numpy array.
+    :param sequence_length: The number of timesteps per sequence.
+    """
+    sequences = []
+    for i in range(len(data) - sequence_length + 1):
+        sequences.append(data[i: i + sequence_length])
+    return np.array(sequences)
+
 
 def load_model_from_github(url):
     filename = url.split('/')[-1]
