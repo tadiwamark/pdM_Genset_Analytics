@@ -26,6 +26,8 @@ sequence_length = 10
 
 # Anomaly detection
 def detect_anomalies(generator, discriminator, real_data, numerical_features, features, threshold=0.5):
+    if real_data.shape[2] != features:
+        real_data = real_data[:, :, :features]
     # Ensure the numerical_features list matches the real_data shape
     if len(numerical_features) != real_data.shape[1]:
         # Adjust the numerical_features to match the number of columns in real_data
