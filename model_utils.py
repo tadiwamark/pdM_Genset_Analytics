@@ -26,21 +26,25 @@ sequence_length = 10
 
 # Anomaly detection
 def detect_anomalies(generator, discriminator, real_data, numerical_features, features, threshold=0.5):
-    
-    
+    # Ensure the numerical_features list matches the real_data shape
+    if len(numerical_features) != real_data.shape[1]:
+        # Adjust the numerical_features to match the number of columns in real_data
+        numerical_features = numerical_features[:real_data.shape[1]]
+        print(f"Adjusted numerical_features to match real_data columns: {len(numerical_features)} columns")
+
     # Convert scaled data to DataFrame
     scaled_data_df = pd.DataFrame(real_data, columns=numerical_features)
 
-    required_features = scaled_data_df.columns[:25]  # This now works because scaled_data_df is a DataFrame
+    required_features = scaled_data_df.columns[:25]  # Assumes top 25 features are required
     scaled_data_seq = scaled_data_df[required_features].values
-    
+
     # Generate fake sequences
     batch_size = scaled_data_seq.shape[0]
     random_latent_vectors = tf.random.normal(shape=(batch_size, sequence_length, features))
     generated_sequences = generator.predict(random_latent_vectors)
 
     # Get discriminator predictions for both real and fake data
-    real_predictions = discriminator.predict(real_data)
+    real_predictions = discriminator.predict(scaled_data_seq)
     fake_predictions = discriminator.predict(generated_sequences)
 
     # Identify real sequences that are classified as fake
