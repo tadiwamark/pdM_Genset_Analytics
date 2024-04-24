@@ -98,7 +98,7 @@ def main():
           numeric_column_names += domain_features
     
           # Normalize and prepare sequences
-          if uploaded_scaler is not None and uploaded_model is not None:
+          if uploaded_scaler is not None:
               # Load Scaler
               with gzip.open(uploaded_scaler, 'rb') as scaler_file:
                   scaler = pickle.load(scaler_file)
