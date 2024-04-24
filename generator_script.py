@@ -60,12 +60,6 @@ def generate_continuous_data(start_time, end_time, interval='1min'):
             'AmbientTemp( °C)': generate_parameter_value(25, 35),
             'FuelLevel(Ltrs)' : generate_parameter_value(1340,1500),
             'Freq(Hz)' : generate_parameter_value(0, 60),
-            'Battery Voltage': generate_parameter_value(150,650),
-            'Phase1Voltage(V)': generate_parameter_value(150, 650),
-            'Phase2Voltage(V)': generate_parameter_value(150, 650),
-            'Phase3Voltage(V)': generate_parameter_value(150, 650),
-            'Load kW' : generate_parameter_value(1500, 6500),
-            'Load %' : generate_parameter_value(50, 100)
         }
         simulated_data, anomaly_type = simulate_anomalies(simulated_data)
         simulated_data['Anomaly_Type'] = anomaly_type
