@@ -33,11 +33,18 @@ def simulate_anomalies(simulated_data):
 
     return simulated_data, anomaly_type
 
-def generate_continuous_data():
-    while True:  # This loop will run forever, or until you stop it
-        current_time = datetime.now()
+def generate_continuous_data(start_time, end_time, interval='1min'):
+    print(f"Generating data from {start_time} to {end_time} with interval {interval}")
+    time_range = pd.date_range(start=start_time, end=end_time, freq=interval)
+    data_records = []
+
+    if time_range.empty:
+        print("The time range is empty. Check your start and end times.")
+        return pd.DataFrame()  # Return an empty DataFrame immediately
+
+    for current_time in time_range:
         simulated_data = {
-            'Time': current_time.strftime('%m/%d/%Y %H:%M'),  # Format the timestamp as in your dataset
+            'Time': current_time.strftime('%m/%d/%Y %H:%M'),
             'AverageCurrent(A)': generate_parameter_value(150, 650),
             'Phase1Current(A)': generate_parameter_value(150, 650),
             'Phase2Current(A)': generate_parameter_value(150, 650),
@@ -45,21 +52,27 @@ def generate_continuous_data():
             'ExhaustTemp(°C)': generate_parameter_value(500, 750),
             'inLetPressure(KPa)': generate_parameter_value(25, 100),
             'outLetPressure(KPa)': generate_parameter_value(20, 90),
-            'OutLetAirTemp(°C)': generate_parameter_value(20, 41),
-            'CoolantTemp( °C)': generate_parameter_value(30, 95),
-            'OilPressure(KPa)': generate_parameter_value(200, 500),
-            'PowerFactor': generate_parameter_value(0.8, 1.2),
-            'Speed(Rpm)': generate_parameter_value(1200, 1700),
+            'OutLetAirTemp(°C)' : generate_parameter_value(20, 41),
+            'CoolantTemp( °C)' : generate_parameter_value(30, 95),
+            'OilPressure(KPa)' : generate_parameter_value(200, 500),
+            'PowerFactor' : generate_parameter_value(0.8, 1.2),
+            'Speed(Rpm)' : generate_parameter_value(1200, 1700),
             'AmbientTemp( °C)': generate_parameter_value(25, 35),
-            'FuelLevel(Ltrs)': generate_parameter_value(1340, 1500),
-            'Freq(Hz)': generate_parameter_value(0, 60),
+            'FuelLevel(Ltrs)' : generate_parameter_value(1340,1500),
+            'Freq(Hz)' : generate_parameter_value(0, 60),
+            'Battery Voltage': generate_parameter_value(150,650),
+            'Phase1Voltage(V)': generate_parameter_value(150, 650),
+            'Phase2Voltage(V)': generate_parameter_value(150, 650),
+            'Phase3Voltage(V)': generate_parameter_value(150, 650),
+            'Load kW' : generate_parameter_value(1500, 6500),
+            'Load %' : generate_parameter_value(50, 100),
         }
         simulated_data, anomaly_type = simulate_anomalies(simulated_data)
         simulated_data['Anomaly_Type'] = anomaly_type
-        
-        time.sleep(60)  # Sleep for 60 seconds to simulate real-time data generation, adjust as needed
+        data_records.append(simulated_data)
 
-    
-    return simulated_data
+    simulated_df = pd.DataFrame(data_records)
+    print(f"Generated {len(data_records)} records.")
+    return simulated_df
 
 
