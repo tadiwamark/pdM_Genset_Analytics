@@ -107,16 +107,18 @@ def generate_prompts_from_anomalies(df):
   - anomaly_data: A list of strings, each a prompt for a row in the DataFrame.
   """
   # Build the prompt string by iterating over each column and its value in the row
-  anomaly_data = ", ".join([f"{column} is {value}" for column, value in row.items()])
+ anomaly_prompts = []
 
+    # Iterate over each row in the DataFrame
+    for index, row in df.iterrows():
+        # Build the prompt string by iterating over each column and its value in the row
+        prompt = ", ".join([f"{column} is {value}" for column, value in row.items()])
+        # Append the question about potential issues and recommended actions
+        prompt += " what are the potential issues and recommended actions?"
+        # Append the complete prompt to the list
+        anomaly_prompts.append(prompt)
 
-  # Append the question about potential issues and recommended actions
-  anomaly_data += " what are the potential issues and recommended actions?"
-
-
-
-
-  return anomaly_data
+    return anomaly_prompts
 
 def inverse_transform(scaled_data, scaler):
   return scaler.inverse_transform(scaled_data)
