@@ -145,7 +145,7 @@ def main():
                 diagnosis = generate_diagnosis_and_recommendation(prompt)
                 insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
 
-                time.sleep(10) 
+                time.sleep(60) 
 
   else:
       st.write("Generator is currently OFF. Use the sidebar to start the generator.")
