@@ -141,20 +141,11 @@ def main():
           # Generate prompts for each anomaly
           anomaly_data = generate_prompts_from_anomalies(anomalies_df)
 
+          for prompt in anomaly_data:
+                diagnosis = generate_diagnosis_and_recommendation(prompt)
+                insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
 
-          # Get interpretation and recommendation for the detected anomaly
-          diagnosis = generate_diagnosis_and_recommendation(anomaly_data)
-          print("Model Diagnosis and Recommendation:")
-          print(diagnosis)
-    
-          # Display interpretation and recommendation
-          insights_placeholder.markdown(f"""
-          ## Insights
-          - **Model Diagnosis and Recommendation:\n** {diagnosis}
-          """)
-    
-          # Wait before updating with new data
-          time.sleep(10)  # Adjust the sleep time as needed for your simulation speed
+                time.sleep(10) 
 
   else:
       st.write("Generator is currently OFF. Use the sidebar to start the generator.")
