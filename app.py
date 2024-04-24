@@ -120,7 +120,7 @@ def main():
           features = scaled_data.shape[1]
     
           # Anomaly detection
-          anomalies, real_predictions, fake_predictions = detect_anomalies(generator, discriminator, scaled_data_seq, numeric_column_names)
+          anomalies, real_predictions, fake_predictions = detect_anomalies(generator, discriminator, scaled_data_seq, numeric_columns)
                 
     
           real_predictions = discriminator.predict(scaled_data_seq)
@@ -135,7 +135,7 @@ def main():
           anomalies_data = inverse_transform(anomalies.reshape(-1, features), scaler)
     
           # Convert anomalies_data back to a DataFrame for easier analysis
-          anomalies_df = pd.DataFrame(anomalies_data, columns=numeric_column_names)
+          anomalies_df = pd.DataFrame(anomalies_data, columns=numeric_columns)
     
     
           # Generate prompts for each anomaly
