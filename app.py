@@ -99,6 +99,7 @@ def main():
     
           # Normalize and prepare sequences
           numeric_columns = simulated_data_df.select_dtypes(include=[np.number]).columns
+          numeric_columns += domain_features
           scaler = StandardScaler()
               
           # Fit and transform the data
