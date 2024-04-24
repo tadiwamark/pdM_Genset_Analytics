@@ -98,7 +98,7 @@ def main():
           numeric_column_names += domain_features
     
           # Normalize and prepare sequences
-          numeric_columns = simulated_data_df.select_dtypes(include=[np.number]).columns
+          numeric_columns = simulated_data_df.select_dtypes(include=['int64', 'float64']).columns.tolist()
           numeric_columns += domain_features
           scaler = StandardScaler()
               
