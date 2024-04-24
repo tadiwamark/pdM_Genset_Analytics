@@ -32,6 +32,12 @@ generator_path = 'https://github.com/tadiwamark/pdM_Genset_Analytics/releases/do
 discriminator_path = 'https://github.com/tadiwamark/pdM_Genset_Analytics/releases/download/gan/discriminator_model.h5'
 
 
+optimizer = 'adam'
+generator_loss = 'binary_crossentropy'
+discriminator_loss = 'binary_crossentropy'
+
+generator.compile(optimizer=optimizer, loss=generator_loss)
+discriminator.compile(optimizer=optimizer, loss=discriminator_loss)
 
 # Load Model
 generator = load_model_from_github(generator_path)
