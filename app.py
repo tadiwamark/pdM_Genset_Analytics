@@ -93,10 +93,9 @@ def main():
           simulated_data_df['Power_Factor_Deviation'] = 1 - simulated_data_df['PowerFactor'].abs()
     
           # Normalize and prepare sequences
-          numerical_features = simulated_data_df.columns.tolist()
           scaler = StandardScaler()
           scaled_data = scaler.fit_transform(simulated_data_df[numeric_columns])
-          scaled_data_df = pd.DataFrame(scaled_data, columns=numerical_features)
+          scaled_data_df = pd.DataFrame(scaled_data, columns=numeric_columns)
           scaled_data_seq = create_sequences(scaled_data_df, 10)
 
 
