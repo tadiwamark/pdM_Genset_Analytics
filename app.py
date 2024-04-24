@@ -83,7 +83,7 @@ def main():
       
       if not simulated_data_df.empty:
           # Prepare data for anomaly detection
-          numeric_columns = simulated_data_df.select_dtypes(include=[np.number])
+          numeric_column_names = simulated_data_df.select_dtypes(include=[np.number]).columns.tolist()
           simulated_data_df[numeric_columns.columns] = numeric_columns
           # Feature engineering
           simulated_data_df['Load_Factor'] = simulated_data_df['AverageCurrent(A)'] / simulated_data_df['Phase1Current(A)'].max()
@@ -94,8 +94,8 @@ def main():
     
           # Normalize and prepare sequences
           scaler = StandardScaler()
-          scaled_data = scaler.fit_transform(simulated_data_df[numeric_columns])
-          scaled_data_df = pd.DataFrame(scaled_data, columns=numeric_columns)
+          scaled_data = scaler.fit_transform(simulated_data_df[numeric_column_names])
+          scaled_data_df = pd.DataFrame(scaled_data, columns=numeric_column_names)
           scaled_data_seq = create_sequences(scaled_data_df, 10)
 
 
