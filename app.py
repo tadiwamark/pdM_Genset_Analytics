@@ -63,7 +63,7 @@ def main():
   generator_state = st.sidebar.button('Start/Stop Generator')
 
 
-  uploaded_scaler = st.file_uploader("Upload Scaler", type=['pickle'])
+  uploaded_scaler = st.file_uploader("Upload Scaler", type=['pkl'])
 
   # Session states for generator operation and data generation
   if 'generator_on' not in st.session_state:
