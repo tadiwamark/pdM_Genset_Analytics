@@ -18,6 +18,7 @@ import requests
 import pickle
 import streamlit as st
 from sklearn.preprocessing import StandardScaler
+import openai
 
 
 # Model hyperparameters
