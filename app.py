@@ -100,8 +100,8 @@ def main():
           # Normalize and prepare sequences
           if uploaded_scaler is not None:
               # Load Scaler
-              with open(uploaded_scaler, 'rb') as scaler_file:
-                  scaler = pickle.load(scaler_file)
+              scaler = pickle.load(scaler_file)
+              
           scaled_data = scaler.transform(simulated_data_df[numeric_column_names])
           scaled_data_df = pd.DataFrame(scaled_data, columns=numeric_column_names)
           scaled_data_seq = create_sequences(scaled_data_df, 10)
