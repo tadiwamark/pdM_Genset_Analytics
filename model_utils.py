@@ -95,19 +95,19 @@ def generate_diagnosis_and_recommendation(anomaly_data):
 
 
 def generate_prompts_from_anomalies(df):
-
-  """
-  Takes a DataFrame of anomalies and generates a list of prompts for each row.
-  Each prompt includes the column values and a question about potential issues and recommended actions.
-
-  Parameters:
-  - anomalies_df: DataFrame containing anomaly data.
-
-  Returns:
-  - anomaly_data: A list of strings, each a prompt for a row in the DataFrame.
-  """
-  # Build the prompt string by iterating over each column and its value in the row
- anomaly_prompts = []
+    """
+    Takes a DataFrame of anomalies and generates a list of prompts for each row.
+    Each prompt includes the column values and a question about potential issues and recommended actions.
+    
+    Parameters:
+    - anomalies_df: DataFrame containing anomaly data.
+    
+    Returns:
+    - anomaly_data: A list of strings, each a prompt for a row in the DataFrame.
+    """
+    
+    # Build the prompt string by iterating over each column and its value in the row
+    anomaly_prompts = []
 
     # Iterate over each row in the DataFrame
     for index, row in df.iterrows():
