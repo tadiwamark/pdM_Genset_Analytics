@@ -96,7 +96,7 @@ def main():
           # Normalize and prepare sequences
           numerical_features = simulated_data_df.columns.tolist()
           scaler = StandardScaler()
-          scaled_data = scaler.fit_transform(simulated_data_df[numerical_features])
+          scaled_data = scaler.fit_transform(simulated_data_df[numeric_columns])
           scaled_data_df = pd.DataFrame(scaled_data, columns=numerical_features)
           scaled_data_seq = create_sequences(scaled_data_df, 10)
 
