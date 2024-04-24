@@ -84,7 +84,6 @@ def main():
       if not simulated_data_df.empty:
           # Prepare data for anomaly detection
           numeric_column_names = simulated_data_df.select_dtypes(include=[np.number]).columns.tolist()
-          simulated_data_df[numeric_columns.columns] = numeric_columns
           # Feature engineering
           simulated_data_df['Load_Factor'] = simulated_data_df['AverageCurrent(A)'] / simulated_data_df['Phase1Current(A)'].max()
           simulated_data_df['Temp_Gradient'] = simulated_data_df['ExhaustTemp(°C)'] - simulated_data_df['CoolantTemp( °C)']
