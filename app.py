@@ -98,12 +98,13 @@ def main():
           numeric_column_names += domain_features
     
           # Normalize and prepare sequences
-          if uploaded_scaler is not None:
-              # Load Scaler
-              scaler = pickle.load(uploaded_scaler)
+          numeric_columns = simulated_data_df.select_dtypes(include=[np.number]).columns
+          scaler = StandardScaler()
               
-          scaled_data = scaler.transform(simulated_data_df[numeric_column_names])
-          scaled_data_df = pd.DataFrame(scaled_data, columns=numeric_column_names)
+          # Fit and transform the data
+          scaled_data = scaler.fit_transform(simulated_data_df[numeric_columns])
+          scaled_data_df = pd.DataFrame(scaled_data, columns=numeric_columns)
+            
           scaled_data_seq = create_sequences(scaled_data_df, 10)
 
 
