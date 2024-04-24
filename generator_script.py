@@ -10,6 +10,7 @@ Original file is located at
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
+import time
 
 def generate_parameter_value(range_min, range_max, anomaly_factor=1.0):
     """
