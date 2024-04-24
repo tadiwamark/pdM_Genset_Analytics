@@ -65,7 +65,7 @@ def generate_continuous_data(start_time, end_time, interval='1min'):
             'Phase2Voltage(V)': generate_parameter_value(150, 650),
             'Phase3Voltage(V)': generate_parameter_value(150, 650),
             'Load kW' : generate_parameter_value(1500, 6500),
-            'Load %' : generate_parameter_value(50, 100),
+            'Load %' : generate_parameter_value(50, 100)
         }
         simulated_data, anomaly_type = simulate_anomalies(simulated_data)
         simulated_data['Anomaly_Type'] = anomaly_type
