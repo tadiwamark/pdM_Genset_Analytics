@@ -62,6 +62,9 @@ def main():
   st.sidebar.title('Generator Controls')
   generator_state = st.sidebar.button('Start/Stop Generator')
 
+
+  uploaded_scaler = st.file_uploader("Upload Scaler", type=['gz'])
+
   # Session states for generator operation and data generation
   if 'generator_on' not in st.session_state:
       st.session_state['generator_on'] = False
@@ -95,7 +98,10 @@ def main():
           numeric_column_names += domain_features
     
           # Normalize and prepare sequences
-          scaler = StandardScaler()
+          if uploaded_scaler is not None and uploaded_model is not None:
+              # Load Scaler
+              with gzip.open(uploaded_scaler, 'rb') as scaler_file:
+                  scaler = pickle.load(scaler_file)
           scaled_data = scaler.fit_transform(simulated_data_df[numeric_column_names])
           scaled_data_df = pd.DataFrame(scaled_data, columns=numeric_column_names)
           scaled_data_seq = create_sequences(scaled_data_df, 10)
