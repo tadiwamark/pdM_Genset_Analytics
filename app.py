@@ -77,6 +77,7 @@ def main():
   # Main dashboard for displaying generator data and insights
   data_placeholder = st.empty()
   insights_placeholder = st.empty()
+  graph_placeholder = st.empty()
 
   if st.session_state['generator_on']:
       start_time = datetime.now()
