@@ -144,8 +144,18 @@ def main():
           for prompt in anomaly_data:
                 diagnosis = generate_diagnosis_and_recommendation(prompt)
                 insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
-
                 time.sleep(60) 
+
+          
+          # Graphical Simulation of the Data
+          fig, ax = plt.subplots()
+          ax.plot(simulated_data_df.index, simulated_data_df['PowerFactor'], label='Power Factor')
+          ax.set_xlabel('Time')
+          ax.set_ylabel('Power Factor')
+          ax.legend()
+          graph_placeholder.pyplot(fig)      
+          
+          time.sleep(5) 
 
   else:
       st.write("Generator is currently OFF. Use the sidebar to start the generator.")
