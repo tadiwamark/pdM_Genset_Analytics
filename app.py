@@ -83,7 +83,7 @@ def main():
   if st.session_state['generator_on']:
       start_time = datetime.now()
       while st.session_state['generator_on']:
-          end_time = datetime.now() + timedelta(seconds=120)
+          end_time = datetime.now() + timedelta(seconds=3600)
           simulated_data_df = generate_continuous_data(start_time, end_time)
           
           if not simulated_data_df.empty:
