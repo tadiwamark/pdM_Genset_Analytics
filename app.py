@@ -109,6 +109,16 @@ def main():
             
           scaled_data_seq = create_sequences(scaled_data_df, 10)
 
+          # Graphical display
+          fig, ax = plt.subplots()
+          ax.plot(simulated_data_df.index, simulated_data_df['PowerFactor'], label='Power Factor')
+          ax.set_xlabel('Time')
+          ax.set_ylabel('Power Factor')
+          ax.legend()
+          graph_placeholder.pyplot(fig)
+
+          time.sleep(5) 
+
 
       for _, row in simulated_data_df.iterrows():
           # Display simulated data
@@ -148,15 +158,7 @@ def main():
 
                 time.sleep(60)
 
-          # Graphical Simulation of the Data
-          fig, ax = plt.subplots()
-          ax.plot(simulated_data_df.index, simulated_data_df['PowerFactor'], label='Power Factor')
-          ax.set_xlabel('Time')
-          ax.set_ylabel('Power Factor')
-          ax.legend()
-          graph_placeholder.pyplot(fig)      
           
-          time.sleep(5) 
            
 
   else:
