@@ -20,14 +20,13 @@ import os
 import urllib.request
 from datetime import datetime, timedelta
 from generator_script import generate_continuous_data
-from model_utils import detect_anomalies, generate_diagnosis_and_recommendation, generate_prompts_from_anomalies, inverse_transform, create_sequences, load_model_from_github, download_and_load_scaler
+from model_utils import detect_anomalies, generate_diagnosis_and_recommendation, generate_prompts_from_anomalies, inverse_transform, create_sequences, load_model_from_github
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 
 
 
 # Paths to files
-scaler_path = 'https://github.com/tadiwamark/pdM_Genset_Analytics/releases/download/gan/scaler.gz'
 generator_path = 'https://github.com/tadiwamark/pdM_Genset_Analytics/releases/download/gan/generator_model.h5'
 discriminator_path = 'https://github.com/tadiwamark/pdM_Genset_Analytics/releases/download/gan/discriminator_model.h5'
 
@@ -63,7 +62,7 @@ def main():
   generator_state = st.sidebar.button('Start/Stop Generator')
 
 
-  uploaded_scaler = st.file_uploader("Upload Scaler", type=['pkl'])
+
 
   # Session states for generator operation and data generation
   if 'generator_on' not in st.session_state:
