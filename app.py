@@ -111,35 +111,15 @@ def main():
 
           # Graphical display
           fig, ax = plt.subplots()
-
-          # Plotting current metrics
           ax.plot(simulated_data_df.index, simulated_data_df['AverageCurrent(A)'], label='Average Current (A)', color='blue')
           ax.plot(simulated_data_df.index, simulated_data_df['Phase1Current(A)'], label='Phase 1 Current (A)', color='red', linestyle='--')
           ax.plot(simulated_data_df.index, simulated_data_df['Phase2Current(A)'], label='Phase 2 Current (A)', color='green', linestyle='--')
           ax.plot(simulated_data_df.index, simulated_data_df['Phase3Current(A)'], label='Phase 3 Current (A)', color='purple', linestyle='--')
-
-
-          # Adding a secondary axis for temperature
-          ax2 = ax.twinx()
-          ax2.plot(simulated_data_df.index, simulated_data_df['ExhaustTemp(°C)'], label='Exhaust Temp (°C)', color='orange', marker='o', markersize=4)
-          ax2.plot(simulated_data_df.index, simulated_data_df['CoolantTemp( °C)'], label='Coolant Temp (°C)', color='cyan', marker='x', markersize=4)
-    
-          # Formatting
           ax.set_xlabel('Time')
           ax.set_ylabel('Current (A)')
-          ax2.set_ylabel('Temperature (°C)')
-      
-          # Date formatting on x-axis
-          ax.xaxis.set_major_locator(mdates.MinuteLocator(interval=1))
-          ax.xaxis.set_major_formatter(DateFormatter("%H:%M:%S"))
-    
-          # Legends
-          lines, labels = ax.get_legend_handles_labels()
-          lines2, labels2 = ax2.get_legend_handles_labels()
-          ax2.legend(lines + lines2, labels + labels2, loc='upper right')
-    
+          ax.legend()
           graph_placeholder.pyplot(fig)
-    
+
           time.sleep(5) 
 
 
