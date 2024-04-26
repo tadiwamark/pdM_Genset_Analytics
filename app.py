@@ -24,6 +24,7 @@ from model_utils import detect_anomalies, generate_diagnosis_and_recommendation,
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+from matplotlib.dates import DateFormatter
 
 
 # Paths to files
