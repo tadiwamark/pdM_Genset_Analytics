@@ -122,7 +122,7 @@ def main():
           # Adding a secondary axis for temperature
           ax2 = ax.twinx()
           ax2.plot(simulated_data_df.index, simulated_data_df['ExhaustTemp(°C)'], label='Exhaust Temp (°C)', color='orange', marker='o', markersize=4)
-          ax2.plot(simulated_data_df.index, simulated_data_df['CoolantTemp(°C)'], label='Coolant Temp (°C)', color='cyan', marker='x', markersize=4)
+          ax2.plot(simulated_data_df.index, simulated_data_df['CoolantTemp( °C)'], label='Coolant Temp (°C)', color='cyan', marker='x', markersize=4)
     
           # Formatting
           ax.set_xlabel('Time')
