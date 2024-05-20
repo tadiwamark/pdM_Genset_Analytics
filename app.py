@@ -71,94 +71,73 @@ def main():
 
 
   if st.session_state['generator_on']:
-      start_time = datetime.now()
-      end_time = start_time + timedelta(hours=3)
-      simulated_data_df = generate_continuous_data()
+      data_generator = generate_continuous_data()
 
-      
-      if not simulated_data_df.empty:
-          # Prepare data for anomaly detection
-          numeric_column_names = simulated_data_df.select_dtypes(include=['int64', 'float64']).columns.tolist()
-          # Feature engineering
-          simulated_data_df['Load_Factor'] = simulated_data_df['AverageCurrent(A)'] / simulated_data_df['Phase1Current(A)'].max()
-          simulated_data_df['Temp_Gradient'] = simulated_data_df['ExhaustTemp(°C)'] - simulated_data_df['CoolantTemp( °C)']
-          simulated_data_df['Pressure_Ratio'] = simulated_data_df['inLetPressure(KPa)'] / simulated_data_df['outLetPressure(KPa)']
-          simulated_data_df['Imbalance_Current'] = simulated_data_df[['Phase1Current(A)', 'Phase2Current(A)', 'Phase3Current(A)']].std(axis=1)
-          simulated_data_df['Power_Factor_Deviation'] = 1 - simulated_data_df['PowerFactor'].abs()
+        for simulated_data_df in data_generator:
+            if not simulated_data_df.empty:
+                # Prepare data for anomaly detection
+                numeric_column_names = simulated_data_df.select_dtypes(include=['int64', 'float64']).columns.tolist()
+                # Feature engineering
+                simulated_data_df['Load_Factor'] = simulated_data_df['AverageCurrent(A)'] / simulated_data_df['Phase1Current(A)'].max()
+                simulated_data_df['Temp_Gradient'] = simulated_data_df['ExhaustTemp(°C)'] - simulated_data_df['CoolantTemp( °C)']
+                simulated_data_df['Pressure_Ratio'] = simulated_data_df['inLetPressure(KPa)'] / simulated_data_df['outLetPressure(KPa)']
+                simulated_data_df['Imbalance_Current'] = simulated_data_df[['Phase1Current(A)', 'Phase2Current(A)', 'Phase3Current(A)']].std(axis=1)
+                simulated_data_df['Power_Factor_Deviation'] = 1 - simulated_data_df['PowerFactor'].abs()
 
-          domain_features = ['Load_Factor', 'Temp_Gradient', 'Pressure_Ratio', 'Imbalance_Current','Power_Factor_Deviation']
-          numeric_column_names += domain_features
-    
-          # Normalize and prepare sequences
-          numeric_columns = simulated_data_df.select_dtypes(include=['int64', 'float64']).columns.tolist()
-          numeric_columns += domain_features
-          scaler = StandardScaler()
-              
-          # Fit and transform the data
-          scaled_data = scaler.fit_transform(simulated_data_df[numeric_columns])
-          scaled_data_df = pd.DataFrame(scaled_data, columns=numeric_columns)
-            
-          scaled_data_seq = create_sequences(scaled_data_df, 10)
+                domain_features = ['Load_Factor', 'Temp_Gradient', 'Pressure_Ratio', 'Imbalance_Current', 'Power_Factor_Deviation']
+                numeric_column_names += domain_features
 
-          # Graphical display
-          fig, ax = plt.subplots()
-          ax.plot(simulated_data_df.index, simulated_data_df['AverageCurrent(A)'], label='Average Current (A)', color='blue')
-          ax.plot(simulated_data_df.index, simulated_data_df['Phase1Current(A)'], label='Phase 1 Current (A)', color='red', linestyle='--')
-          ax.plot(simulated_data_df.index, simulated_data_df['Phase2Current(A)'], label='Phase 2 Current (A)', color='green', linestyle='--')
-          ax.plot(simulated_data_df.index, simulated_data_df['Phase3Current(A)'], label='Phase 3 Current (A)', color='purple', linestyle='--')
-          ax.set_xlabel('Time')
-          ax.set_ylabel('Current (A)')
-          ax.legend()
-          graph_placeholder.pyplot(fig)
+                # Normalize and prepare sequences
+                scaler = StandardScaler()
+                scaled_data = scaler.fit_transform(simulated_data_df[numeric_column_names])
+                scaled_data_df = pd.DataFrame(scaled_data, columns=numeric_column_names)
 
-          time.sleep(5) 
+                scaled_data_seq = create_sequences(scaled_data_df, 10)
 
+                # Graphical display
+                fig, ax = plt.subplots()
+                ax.plot(simulated_data_df.index, simulated_data_df['AverageCurrent(A)'], label='Average Current (A)', color='blue')
+                ax.plot(simulated_data_df.index, simulated_data_df['Phase1Current(A)'], label='Phase 1 Current (A)', color='red', linestyle='--')
+                ax.plot(simulated_data_df.index, simulated_data_df['Phase2Current(A)'], label='Phase 2 Current (A)', color='green', linestyle='--')
+                ax.plot(simulated_data_df.index, simulated_data_df['Phase3Current(A)'], label='Phase 3 Current (A)', color='purple', linestyle='--')
+                ax.set_xlabel('Time')
+                ax.set_ylabel('Current (A)')
+                ax.legend()
+                graph_placeholder.pyplot(fig)
 
-      for _, row in simulated_data_df.iterrows():
-          # Display simulated data
-          data_placeholder.dataframe(row.to_frame().T)
+                for _, row in simulated_data_df.iterrows():
+                    # Display simulated data
+                    data_placeholder.dataframe(row.drop('Anomaly_Type').to_frame().T)
 
-          # Detect anomalies in the simulated data
-    
-          optimal_threshold = 0.7
-    
-          features = scaled_data.shape[1]
-    
-          # Anomaly detection
-          anomalies, real_predictions, fake_predictions = detect_anomalies(generator, discriminator, scaled_data_seq, numeric_columns)
-                
-    
-          real_predictions = discriminator.predict(scaled_data_seq)
+                    # Detect anomalies in the simulated data
+                    optimal_threshold = 0.7
+                    features = scaled_data.shape[1]
+                    anomalies, real_predictions, fake_predictions = detect_anomalies(generator, discriminator, scaled_data_seq, numeric_column_names)
+                    real_predictions = discriminator.predict(scaled_data_seq)
+                    anomalies_indices = np.where(real_predictions < optimal_threshold)[0]
+                    anomalies = scaled_data_seq[anomalies_indices]
 
+                    # Identify characteristics of anomalies
+                    anomalies_data = inverse_transform(anomalies.reshape(-1, features), scaler)
+                    anomalies_df = pd.DataFrame(anomalies_data, columns=numeric_column_names)
 
-    
-          anomalies_indices = np.where(real_predictions < optimal_threshold)[0]
-          anomalies = scaled_data_seq[anomalies_indices]
-    
-    
-          # Identify characteristics of anomalies
-          anomalies_data = inverse_transform(anomalies.reshape(-1, features), scaler)
-    
-          # Convert anomalies_data back to a DataFrame for easier analysis
-          anomalies_df = pd.DataFrame(anomalies_data, columns=numeric_columns)
-    
-    
-          # Generate prompts for each anomaly
-          anomaly_data = generate_prompts_from_anomalies(anomalies_df)
+                    # Display anomalous data
+                    anomalies_placeholder.dataframe(anomalies_df.drop(columns=['Anomaly_Type']))
 
-          for prompt in anomaly_data:
-                diagnosis = generate_diagnosis_and_recommendation(prompt)
-                insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
+                    # Generate prompts for each anomaly
+                    anomaly_data = generate_prompts_from_anomalies(anomalies_df)
 
-                time.sleep(60)
+                    for prompt in anomaly_data:
+                        diagnosis = generate_diagnosis_and_recommendation(prompt)
+                        insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
 
-          
-           
+                        # Send email alert
+                        send_email("Generator Anomaly Alert", diagnosis)
 
-  else:
-      st.write("Generator is currently OFF. Use the sidebar to start the generator.")
+                        time.sleep(60)
 
-
+    else:
+        st.write("Generator is currently OFF. Use the sidebar to start the generator.")
 
 if __name__ == "__main__":
     main()
