@@ -27,7 +27,7 @@ sequence_length = 10
 
 # Anomaly detection
 def detect_anomalies(generator, discriminator, scaled_data_seq, numerical_features, threshold=0.5):
-    features = scaled_data_seq.shape[1]  # Dynamically capture the number of features from data
+    features = scaled_data_seq.shape[2]  # Dynamically capture the number of features from data
 
     # Generate fake sequences
     batch_size = scaled_data_seq.shape[0]
