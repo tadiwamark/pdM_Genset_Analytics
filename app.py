@@ -52,6 +52,9 @@ def main():
   data_placeholder = st.empty()
   insights_placeholder = st.empty()
   graph_placeholder = st.empty()
+  status_placeholder = st.empty()
+
+    
   if st.session_state['generator_on']:
       start_time = datetime.now()                                       
 
@@ -131,8 +134,11 @@ def main():
                 insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
                 time.sleep(60)
           
-           
+      status_placeholder.success("Generator is currently ON.")  
+      
   else:
-      st.write("Generator is currently OFF. Use the sidebar to start the generator.")
+      status_placeholder.warning("Generator is currently OFF. Use the sidebar to start the generator.")
+
+
 if __name__ == "__main__":
     main()
