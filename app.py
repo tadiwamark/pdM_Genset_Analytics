@@ -145,6 +145,8 @@ def main():
 
                         time.sleep(60)
 
+        status_placeholder.success("Generator is currently ON.")
+
     else:
         st.write("Generator is currently OFF. Use the sidebar to start the generator.")
 
