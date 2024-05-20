@@ -52,6 +52,8 @@ def main():
   data_placeholder = st.empty()
   insights_placeholder = st.empty()
   graph_placeholder = st.empty()
+  graph_placeholder2 = st.empty()
+  graph_placeholder3 = st.empty()
   status_placeholder = st.empty()
 
     
@@ -97,6 +99,24 @@ def main():
           ax1.set_ylabel('Current (A)')
           ax1.legend()
           graph_placeholder.pyplot(fig1)
+
+          # Update Graph 2
+          fig2, ax2 = plt.subplots(figsize=(15, 8))
+          ax2.plot(simulated_data_df['Time'], simulated_data_df['ExhaustTemp(°C)'].rolling(window=10).mean(), label='Exhaust Temp (°C)', color='blue')
+          ax2.plot(simulated_data_df['Time'], simulated_data_df['CoolantTemp( °C)'].rolling(window=10).mean(), label='Coolant Temp (°C)', color='red', linestyle='--')
+          ax2.set_xlabel('Time')
+          ax2.set_ylabel('Temperature (°C)')
+          ax2.legend()
+          graph_placeholder2.pyplot(fig2)
+
+          # Update Graph 3
+          fig3, ax3 = plt.subplots(figsize=(15, 8))
+          ax3.plot(simulated_data_df['Time'], simulated_data_df['inLetPressure(KPa)'].rolling(window=10).mean(), label='Inlet Pressure (KPa)', color='blue')
+          ax3.plot(simulated_data_df['Time'], simulated_data_df['outLetPressure(KPa)'].rolling(window=10).mean(), label='Outlet Pressure (KPa)', color='red', linestyle='--')
+          ax3.set_xlabel('Time')
+          ax3.set_ylabel('Pressure (KPa)')
+          ax3.legend()
+          graph_placeholder3.pyplot(fig3)
 
           time.sleep(5) 
 
