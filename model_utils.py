@@ -170,5 +170,7 @@ def send_email(subject, body):
     message.attach(MIMEText(body, "plain"))
 
     with smtplib.SMTP("smtp-mail.outlook.com", 587) as server:
+        server.ehlo()
+        server.starttls()
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, message.as_string())
