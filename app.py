@@ -89,10 +89,10 @@ def main():
           
           # Graphical display
           fig1, ax1 = plt.subplots(figsize=(15, 8))
-          ax1.plot(simulated_data_df['Timestamp'], simulated_data_df['AverageCurrent(A)'].rolling(window=10).mean(), label='Average Current (A)', color='blue')
-          ax1.plot(simulated_data_df['Timestamp'], simulated_data_df['Phase1Current(A)'].rolling(window=10).mean(), label='Phase 1 Current (A)', color='red', linestyle='--')
-          ax1.plot(simulated_data_df['Timestamp'], simulated_data_df['Phase2Current(A)'].rolling(window=10).mean(), label='Phase 2 Current (A)', color='green', linestyle='--')
-          ax1.plot(simulated_data_df['Timestamp'], simulated_data_df['Phase3Current(A)'].rolling(window=10).mean(), label='Phase 3 Current (A)', color='purple', linestyle='--')
+          ax1.plot(simulated_data_df['Time'], simulated_data_df['AverageCurrent(A)'].rolling(window=10).mean(), label='Average Current (A)', color='blue')
+          ax1.plot(simulated_data_df['Time'], simulated_data_df['Phase1Current(A)'].rolling(window=10).mean(), label='Phase 1 Current (A)', color='red', linestyle='--')
+          ax1.plot(simulated_data_df['Time'], simulated_data_df['Phase2Current(A)'].rolling(window=10).mean(), label='Phase 2 Current (A)', color='green', linestyle='--')
+          ax1.plot(simulated_data_df['Time'], simulated_data_df['Phase3Current(A)'].rolling(window=10).mean(), label='Phase 3 Current (A)', color='purple', linestyle='--')
           ax1.set_xlabel('Time')
           ax1.set_ylabel('Current (A)')
           ax1.legend()
