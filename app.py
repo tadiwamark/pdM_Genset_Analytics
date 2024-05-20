@@ -104,7 +104,7 @@ def main():
                 scaled_data_seq = create_sequences(scaled_data_df, 10)
 
                 # Graphical display
-                fig, ax = plt.subplots()
+                fig, ax = plt.subplots(figsize=(15, 8))
                 ax.plot(simulated_data_df.index, simulated_data_df['AverageCurrent(A)'], label='Average Current (A)', color='blue')
                 ax.plot(simulated_data_df.index, simulated_data_df['Phase1Current(A)'], label='Phase 1 Current (A)', color='red', linestyle='--')
                 ax.plot(simulated_data_df.index, simulated_data_df['Phase2Current(A)'], label='Phase 2 Current (A)', color='green', linestyle='--')
