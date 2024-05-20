@@ -73,7 +73,7 @@ def main():
   if st.session_state['generator_on']:
       data_generator = generate_continuous_data()
 
-        for simulated_data_df in data_generator:
+      for simulated_data_df in data_generator:
             if not simulated_data_df.empty:
                 # Prepare data for anomaly detection
                 numeric_column_names = simulated_data_df.select_dtypes(include=['int64', 'float64']).columns.tolist()
