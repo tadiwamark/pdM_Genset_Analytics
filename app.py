@@ -116,7 +116,6 @@ def main():
 
                 for _, row in simulated_data_df.iterrows():
                     # Display simulated data
-                    data_placeholder.dataframe(row.drop('Anomaly_Type').to_frame().T)
 
                     # Detect anomalies in the simulated data
                     optimal_threshold = 0.7
