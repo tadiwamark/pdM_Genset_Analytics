@@ -158,7 +158,7 @@ def download_and_load_scaler(url):
 
 # Email alert function
 def send_email(subject, body):
-    sender_email = "tadiwamark@gmail.com"
+    sender_email = "pdm_genset_alerts_24@outlook.com"
     receiver_email = "tadiwamark@gmail.com"
     password = "i^kbpbw7/3AVYA#"
 
