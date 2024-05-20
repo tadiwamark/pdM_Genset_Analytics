@@ -105,10 +105,10 @@ def main():
 
                 # Graphical display
                 fig, ax = plt.subplots(figsize=(15, 8))
-                ax.plot(simulated_data_df.index, simulated_data_df['AverageCurrent(A)'], label='Average Current (A)', color='blue')
-                ax.plot(simulated_data_df.index, simulated_data_df['Phase1Current(A)'], label='Phase 1 Current (A)', color='red', linestyle='--')
-                ax.plot(simulated_data_df.index, simulated_data_df['Phase2Current(A)'], label='Phase 2 Current (A)', color='green', linestyle='--')
-                ax.plot(simulated_data_df.index, simulated_data_df['Phase3Current(A)'], label='Phase 3 Current (A)', color='purple', linestyle='--')
+                ax.plot(simulated_data_df.index, simulated_data_df['AverageCurrent(A)'].rolling(window=10).mean(), label='Average Current (A)', color='blue')
+                ax.plot(simulated_data_df.index, simulated_data_df['Phase1Current(A)'].rolling(window=10).mean(), label='Phase 1 Current (A)', color='red', linestyle='--')
+                ax.plot(simulated_data_df.index, simulated_data_df['Phase2Current(A)'].rolling(window=10).mean(), label='Phase 2 Current (A)', color='green', linestyle='--')
+                ax.plot(simulated_data_df.index, simulated_data_df['Phase3Current(A)'].rolling(window=10).mean(), label='Phase 3 Current (A)', color='purple', linestyle='--')
                 ax.set_xlabel('Time')
                 ax.set_ylabel('Current (A)')
                 ax.legend()
