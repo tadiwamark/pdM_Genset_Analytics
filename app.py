@@ -15,7 +15,9 @@ import os
 import urllib.request
 from datetime import datetime, timedelta
 from generator_script import generate_continuous_data
-from model_utils import detect_anomalies, generate_diagnosis_and_recommendation, generate_prompts_from_anomalies, inverse_transform, create_sequences, load_model_from_github
+from model_utils import detect_anomalies, generate_diagnosis_and_recommendation,
+                        generate_prompts_from_anomalies, inverse_transform, 
+                        create_sequences, load_model_from_github, send_email
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -132,6 +134,10 @@ def main():
           for prompt in anomaly_data:
                 diagnosis = generate_diagnosis_and_recommendation(prompt)
                 insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
+
+                # Send email alert
+                send_email("Generator Anomaly Alert", diagnosis)
+              
                 time.sleep(60)
           
       status_placeholder.success("Generator is currently ON.")  
