@@ -19,6 +19,9 @@ import pickle
 import streamlit as st
 from sklearn.preprocessing import StandardScaler
 import openai
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 
 # Model hyperparameters
@@ -152,3 +155,20 @@ def download_and_load_scaler(url):
         print(f"Failed to download or load the scaler: {e}")
         return None
 
+
+# Email alert function
+def send_email(subject, body):
+    sender_email = "tadiwamark@gmail.com"
+    receiver_email = "receiver@example.com"
+    password = "yourpassword"
+
+    message = MIMEMultipart()
+    message["From"] = sender_email
+    message["To"] = receiver_email
+    message["Subject"] = subject
+
+    message.attach(MIMEText(body, "plain"))
+
+    with smtplib.SMTP_SSL("smtp.example.com", 465) as server:
+        server.login(sender_email, password)
+        server.sendmail(sender_email, receiver_email, message.as_string())
