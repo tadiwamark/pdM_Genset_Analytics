@@ -169,6 +169,6 @@ def send_email(subject, body):
 
     message.attach(MIMEText(body, "plain"))
 
-    with smtplib.SMTP_SSL("smtp-mail.outlook.com", 465) as server:
+    with smtplib.SMTP("smtp-mail.outlook.com", 587) as server:
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, message.as_string())
