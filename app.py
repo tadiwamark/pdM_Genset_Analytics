@@ -136,7 +136,7 @@ def main():
 
                         time.sleep(60)
 
-    else:
+  else:
         st.write("Generator is currently OFF. Use the sidebar to start the generator.")
 
 if __name__ == "__main__":
