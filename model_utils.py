@@ -159,8 +159,8 @@ def download_and_load_scaler(url):
 # Email alert function
 def send_email(subject, body):
     sender_email = "tadiwamark@gmail.com"
-    receiver_email = "receiver@example.com"
-    password = "yourpassword"
+    receiver_email = "tadiwamark@gmail.com"
+    password = "i^kbpbw7/3AVYA#"
 
     message = MIMEMultipart()
     message["From"] = sender_email
@@ -169,6 +169,6 @@ def send_email(subject, body):
 
     message.attach(MIMEText(body, "plain"))
 
-    with smtplib.SMTP_SSL("smtp.example.com", 465) as server:
+    with smtplib.SMTP_SSL("smtp-mail.outlook.com", 587) as server:
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, message.as_string())
