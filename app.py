@@ -58,111 +58,96 @@ def main():
 
     
   if st.session_state['generator_on']:
-      start_time = datetime.now()                                       
+        start_time = datetime.now()
+        generator = generate_continuous_data(start_time)
+        simulated_data_df = pd.DataFrame()
 
-      end_time = start_time + timedelta(hours=3)                        
+        while st.session_state['generator_on']:
+            try:
+                new_data = next(generator)
+                simulated_data_df = pd.concat([simulated_data_df, new_data]).reset_index(drop=True)
 
-      simulated_data_df = generate_continuous_data(start_time, end_time)
-     
-      
-      if not simulated_data_df.empty:
-          # Prepare data for anomaly detection
-          numeric_column_names = simulated_data_df.select_dtypes(include=['int64', 'float64']).columns.tolist()
-          # Feature engineering
-          simulated_data_df['Load_Factor'] = simulated_data_df['AverageCurrent(A)'] / simulated_data_df['Phase1Current(A)'].max()
-          simulated_data_df['Temp_Gradient'] = simulated_data_df['ExhaustTemp(°C)'] - simulated_data_df['CoolantTemp( °C)']
-          simulated_data_df['Pressure_Ratio'] = simulated_data_df['inLetPressure(KPa)'] / simulated_data_df['outLetPressure(KPa)']
-          simulated_data_df['Imbalance_Current'] = simulated_data_df[['Phase1Current(A)', 'Phase2Current(A)', 'Phase3Current(A)']].std(axis=1)
-          simulated_data_df['Power_Factor_Deviation'] = 1 - simulated_data_df['PowerFactor'].abs()
-          domain_features = ['Load_Factor', 'Temp_Gradient', 'Pressure_Ratio', 'Imbalance_Current','Power_Factor_Deviation']
-          numeric_column_names += domain_features
-    
-          # Normalize and prepare sequences
-          numeric_columns = simulated_data_df.select_dtypes(include=['int64', 'float64']).columns.tolist()
-          numeric_columns += domain_features
-          scaler = StandardScaler()
-              
-          # Fit and transform the data
-          scaled_data = scaler.fit_transform(simulated_data_df[numeric_columns])
-          scaled_data_df = pd.DataFrame(scaled_data, columns=numeric_columns)
-            
-          scaled_data_seq = create_sequences(scaled_data_df, 10)
+                if not simulated_data_df.empty:
+                    # Prepare data for anomaly detection
+                    numeric_column_names = simulated_data_df.select_dtypes(include=['int64', 'float64']).columns.tolist()
+                    # Feature engineering
+                    simulated_data_df['Load_Factor'] = simulated_data_df['AverageCurrent(A)'] / simulated_data_df['Phase1Current(A)'].max()
+                    simulated_data_df['Temp_Gradient'] = simulated_data_df['ExhaustTemp(°C)'] - simulated_data_df['CoolantTemp( °C)']
+                    simulated_data_df['Pressure_Ratio'] = simulated_data_df['inLetPressure(KPa)'] / simulated_data_df['outLetPressure(KPa)']
+                    simulated_data_df['Imbalance_Current'] = simulated_data_df[['Phase1Current(A)', 'Phase2Current(A)', 'Phase3Current(A)']].std(axis=1)
+                    simulated_data_df['Power_Factor_Deviation'] = 1 - simulated_data_df['PowerFactor'].abs()
+                    domain_features = ['Load_Factor', 'Temp_Gradient', 'Pressure_Ratio', 'Imbalance_Current','Power_Factor_Deviation']
+                    numeric_column_names += domain_features
 
-          
-          # Graphical display
-          fig1, ax1 = plt.subplots(figsize=(15, 8))
-          ax1.plot(simulated_data_df['Time'], simulated_data_df['AverageCurrent(A)'].rolling(window=10).mean(), label='Average Current (A)', color='blue')
-          ax1.plot(simulated_data_df['Time'], simulated_data_df['Phase1Current(A)'].rolling(window=10).mean(), label='Phase 1 Current (A)', color='red', linestyle='--')
-          ax1.plot(simulated_data_df['Time'], simulated_data_df['Phase2Current(A)'].rolling(window=10).mean(), label='Phase 2 Current (A)', color='green', linestyle='--')
-          ax1.plot(simulated_data_df['Time'], simulated_data_df['Phase3Current(A)'].rolling(window=10).mean(), label='Phase 3 Current (A)', color='purple', linestyle='--')
-          ax1.set_xlabel('Time')
-          ax1.set_ylabel('Current (A)')
-          ax1.legend()
-          graph_placeholder.pyplot(fig1)
+                    # Normalize and prepare sequences
+                    numeric_columns = simulated_data_df.select_dtypes(include=['int64', 'float64']).columns.tolist()
+                    numeric_columns += domain_features
+                    scaler = StandardScaler()
+                    
+                    # Fit and transform the data
+                    scaled_data = scaler.fit_transform(simulated_data_df[numeric_columns])
+                    scaled_data_df = pd.DataFrame(scaled_data, columns=numeric_columns)
+                    
+                    scaled_data_seq = create_sequences(scaled_data_df, 10)
 
-          # Update Graph 2
-          fig2, ax2 = plt.subplots(figsize=(15, 8))
-          ax2.plot(simulated_data_df['Time'], simulated_data_df['ExhaustTemp(°C)'].rolling(window=10).mean(), label='Exhaust Temp (°C)', color='blue')
-          ax2.plot(simulated_data_df['Time'], simulated_data_df['CoolantTemp( °C)'].rolling(window=10).mean(), label='Coolant Temp (°C)', color='red', linestyle='--')
-          ax2.set_xlabel('Time')
-          ax2.set_ylabel('Temperature (°C)')
-          ax2.legend()
-          graph_placeholder2.pyplot(fig2)
+                    # Update Graph 1
+                    fig1, ax1 = plt.subplots(figsize=(15, 8))
+                    ax1.plot(simulated_data_df['Timestamp'], simulated_data_df['AverageCurrent(A)'].rolling(window=10).mean(), label='Average Current (A)', color='blue')
+                    ax1.plot(simulated_data_df['Timestamp'], simulated_data_df['Phase1Current(A)'].rolling(window=10).mean(), label='Phase 1 Current (A)', color='red', linestyle='--')
+                    ax1.plot(simulated_data_df['Timestamp'], simulated_data_df['Phase2Current(A)'].rolling(window=10).mean(), label='Phase 2 Current (A)', color='green', linestyle='--')
+                    ax1.plot(simulated_data_df['Timestamp'], simulated_data_df['Phase3Current(A)'].rolling(window=10).mean(), label='Phase 3 Current (A)', color='purple', linestyle='--')
+                    ax1.set_xlabel('Time')
+                    ax1.set_ylabel('Current (A)')
+                    ax1.legend()
+                    graph_placeholder1.pyplot(fig1)
 
-          # Update Graph 3
-          fig3, ax3 = plt.subplots(figsize=(15, 8))
-          ax3.plot(simulated_data_df['Time'], simulated_data_df['inLetPressure(KPa)'].rolling(window=10).mean(), label='Inlet Pressure (KPa)', color='blue')
-          ax3.plot(simulated_data_df['Time'], simulated_data_df['outLetPressure(KPa)'].rolling(window=10).mean(), label='Outlet Pressure (KPa)', color='red', linestyle='--')
-          ax3.set_xlabel('Time')
-          ax3.set_ylabel('Pressure (KPa)')
-          ax3.legend()
-          graph_placeholder3.pyplot(fig3)
+                    # Update Graph 2
+                    fig2, ax2 = plt.subplots(figsize=(15, 8))
+                    ax2.plot(simulated_data_df['Timestamp'], simulated_data_df['ExhaustTemp(°C)'].rolling(window=10).mean(), label='Exhaust Temp (°C)', color='blue')
+                    ax2.plot(simulated_data_df['Timestamp'], simulated_data_df['CoolantTemp( °C)'].rolling(window=10).mean(), label='Coolant Temp (°C)', color='red', linestyle='--')
+                    ax2.set_xlabel('Time')
+                    ax2.set_ylabel('Temperature (°C)')
+                    ax2.legend()
+                    graph_placeholder2.pyplot(fig2)
 
-          time.sleep(5) 
+                    # Update Graph 3
+                    fig3, ax3 = plt.subplots(figsize=(15, 8))
+                    ax3.plot(simulated_data_df['Timestamp'], simulated_data_df['inLetPressure(KPa)'].rolling(window=10).mean(), label='Inlet Pressure (KPa)', color='blue')
+                    ax3.plot(simulated_data_df['Timestamp'], simulated_data_df['outLetPressure(KPa)'].rolling(window=10).mean(), label='Outlet Pressure (KPa)', color='red', linestyle='--')
+                    ax3.set_xlabel('Time')
+                    ax3.set_ylabel('Pressure (KPa)')
+                    ax3.legend()
+                    graph_placeholder3.pyplot(fig3)
 
+                    # Display simulated data
+                    data_placeholder.dataframe(simulated_data_df)
 
-      for _, row in simulated_data_df.iterrows():
-          # Display simulated data
-          data_placeholder.dataframe(row.to_frame().T)
-          # Detect anomalies in the simulated data
-    
-          optimal_threshold = 0.7
-    
-          features = scaled_data.shape[1]
-    
-          # Anomaly detection
-          anomalies, real_predictions, fake_predictions = detect_anomalies(generator, discriminator, scaled_data_seq, numeric_columns)
-                
-    
-          real_predictions = discriminator.predict(scaled_data_seq)
-    
-          anomalies_indices = np.where(real_predictions < optimal_threshold)[0]
-          anomalies = scaled_data_seq[anomalies_indices]
-    
-    
-          # Identify characteristics of anomalies
-          anomalies_data = inverse_transform(anomalies.reshape(-1, features), scaler)
-    
-          # Convert anomalies_data back to a DataFrame for easier analysis
-          anomalies_df = pd.DataFrame(anomalies_data, columns=numeric_columns)
-    
-    
-          # Generate prompts for each anomaly
-          anomaly_data = generate_prompts_from_anomalies(anomalies_df)
-          for prompt in anomaly_data:
-                diagnosis = generate_diagnosis_and_recommendation(prompt)
-                insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
+                    # Anomaly detection and insights
+                    optimal_threshold = 0.7
+                    features = scaled_data.shape[1]
+                    anomalies, real_predictions, fake_predictions = detect_anomalies(generator, discriminator, scaled_data_seq, numeric_columns)
+                    real_predictions = discriminator.predict(scaled_data_seq)
+                    anomalies_indices = np.where(real_predictions < optimal_threshold)[0]
+                    anomalies = scaled_data_seq[anomalies_indices]
+                    anomalies_data = inverse_transform(anomalies.reshape(-1, features), scaler)
+                    anomalies_df = pd.DataFrame(anomalies_data, columns=numeric_columns)
+                    anomaly_data = generate_prompts_from_anomalies(anomalies_df)
+                    
+                    for prompt in anomaly_data:
+                        diagnosis = generate_diagnosis_and_recommendation(prompt)
+                        insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
+                        send_email("Generator Anomaly Alert", diagnosis)
+                        time.sleep(60)
 
-                # Send email alert
-                send_email("Generator Anomaly Alert", diagnosis)
-              
-                time.sleep(60)
-          
-      status_placeholder.success("Generator is currently ON.")  
-      
+                time.sleep(5)
+
+            except StopIteration:
+                break
+
+        status_placeholder.success("Generator is currently ON.")
+
   else:
-      status_placeholder.warning("Generator is currently OFF. Use the sidebar to start the generator.")
-
+        status_placeholder.warning("Generator is currently OFF. Use the sidebar to start the generator.")
 
 if __name__ == "__main__":
     main()
