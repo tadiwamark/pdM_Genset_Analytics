@@ -29,7 +29,7 @@ def generate_continuous_data(start_time):
         current_time = start_time + timedelta(seconds=5)
         data_records = []
         simulated_data = {
-            'Timestamp': current_time,
+            'Time': current_time,
             'AverageCurrent(A)': generate_parameter_value(150, 650),
             'Phase1Current(A)': generate_parameter_value(150, 650),
             'Phase2Current(A)': generate_parameter_value(150, 650),
