@@ -29,7 +29,7 @@ sequence_length = 10
 
 
 # Anomaly detection
-def detect_anomalies(generator, discriminator, scaled_data_seq, numerical_features, threshold=0.5,features):
+def detect_anomalies(generator, discriminator, scaled_data_seq, features, numerical_features, threshold=0.5):
     features = features  # Dynamically capture the number of features from data
 
     # Generate fake sequences
