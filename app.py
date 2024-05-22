@@ -149,6 +149,8 @@ def main():
 
                         for idx in anomalies_indices:
                             anomalies_timestamps.append(simulated_data_df['Time'].iloc[idx])
+
+                        return
                             
                     # Display insights from queue at regular intervals
                     if not st.session_state.anomaly_queue.empty():
