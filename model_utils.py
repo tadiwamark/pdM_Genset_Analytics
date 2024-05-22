@@ -34,7 +34,7 @@ def detect_anomalies(generator, discriminator, scaled_data_seq, features, numeri
 
     # Generate fake sequences
     batch_size = scaled_data_seq.shape[0]
-    sequence_length = scaled_data_seq.shape[1]
+    sequence_length = 10
     random_latent_vectors = tf.random.normal(shape=(batch_size, sequence_length, features))
     generated_sequences = generator.predict(random_latent_vectors)
 
