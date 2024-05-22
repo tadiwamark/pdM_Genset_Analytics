@@ -92,10 +92,10 @@ def main():
 
                     # Update Graph 1
                     fig1, ax1 = plt.subplots(figsize=(15, 8))
-                    ax1.plot(simulated_data_df['Timestamp'], simulated_data_df['AverageCurrent(A)'].rolling(window=10).mean(), label='Average Current (A)', color='blue')
-                    ax1.plot(simulated_data_df['Timestamp'], simulated_data_df['Phase1Current(A)'].rolling(window=10).mean(), label='Phase 1 Current (A)', color='red', linestyle='--')
-                    ax1.plot(simulated_data_df['Timestamp'], simulated_data_df['Phase2Current(A)'].rolling(window=10).mean(), label='Phase 2 Current (A)', color='green', linestyle='--')
-                    ax1.plot(simulated_data_df['Timestamp'], simulated_data_df['Phase3Current(A)'].rolling(window=10).mean(), label='Phase 3 Current (A)', color='purple', linestyle='--')
+                    ax1.plot(simulated_data_df['Time'], simulated_data_df['AverageCurrent(A)'].rolling(window=10).mean(), label='Average Current (A)', color='blue')
+                    ax1.plot(simulated_data_df['Time'], simulated_data_df['Phase1Current(A)'].rolling(window=10).mean(), label='Phase 1 Current (A)', color='red', linestyle='--')
+                    ax1.plot(simulated_data_df['Time'], simulated_data_df['Phase2Current(A)'].rolling(window=10).mean(), label='Phase 2 Current (A)', color='green', linestyle='--')
+                    ax1.plot(simulated_data_df['Time'], simulated_data_df['Phase3Current(A)'].rolling(window=10).mean(), label='Phase 3 Current (A)', color='purple', linestyle='--')
                     ax1.set_xlabel('Time')
                     ax1.set_ylabel('Current (A)')
                     ax1.legend()
@@ -103,8 +103,8 @@ def main():
 
                     # Update Graph 2
                     fig2, ax2 = plt.subplots(figsize=(15, 8))
-                    ax2.plot(simulated_data_df['Timestamp'], simulated_data_df['ExhaustTemp(°C)'].rolling(window=10).mean(), label='Exhaust Temp (°C)', color='blue')
-                    ax2.plot(simulated_data_df['Timestamp'], simulated_data_df['CoolantTemp( °C)'].rolling(window=10).mean(), label='Coolant Temp (°C)', color='red', linestyle='--')
+                    ax2.plot(simulated_data_df['Time'], simulated_data_df['ExhaustTemp(°C)'].rolling(window=10).mean(), label='Exhaust Temp (°C)', color='blue')
+                    ax2.plot(simulated_data_df['Time'], simulated_data_df['CoolantTemp( °C)'].rolling(window=10).mean(), label='Coolant Temp (°C)', color='red', linestyle='--')
                     ax2.set_xlabel('Time')
                     ax2.set_ylabel('Temperature (°C)')
                     ax2.legend()
@@ -112,8 +112,8 @@ def main():
 
                     # Update Graph 3
                     fig3, ax3 = plt.subplots(figsize=(15, 8))
-                    ax3.plot(simulated_data_df['Timestamp'], simulated_data_df['inLetPressure(KPa)'].rolling(window=10).mean(), label='Inlet Pressure (KPa)', color='blue')
-                    ax3.plot(simulated_data_df['Timestamp'], simulated_data_df['outLetPressure(KPa)'].rolling(window=10).mean(), label='Outlet Pressure (KPa)', color='red', linestyle='--')
+                    ax3.plot(simulated_data_df['Time'], simulated_data_df['inLetPressure(KPa)'].rolling(window=10).mean(), label='Inlet Pressure (KPa)', color='blue')
+                    ax3.plot(simulated_data_df['Time'], simulated_data_df['outLetPressure(KPa)'].rolling(window=10).mean(), label='Outlet Pressure (KPa)', color='red', linestyle='--')
                     ax3.set_xlabel('Time')
                     ax3.set_ylabel('Pressure (KPa)')
                     ax3.legend()
