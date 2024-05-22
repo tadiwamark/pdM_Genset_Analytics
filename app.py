@@ -57,6 +57,7 @@ def main():
         data_generator = generate_continuous_data(start_time)
         simulated_data_df = pd.DataFrame()
         accumulated_data = []
+        anomalies_timestamps = []
 
         while st.session_state['generator_on']:
             try:
@@ -89,7 +90,13 @@ def main():
                     ax1.set_xlabel('Time')
                     ax1.set_ylabel('Current (A)')
                     ax1.legend()
+
+                    for anomaly_time in anomalies_timestamps:
+                        ax1.axvline(anomaly_time, color='red', linestyle='--')
+                    
                     graph_placeholder1.pyplot(fig1)
+
+                    
 
                     fig2, ax2 = plt.subplots(figsize=(15, 8))
                     ax2.plot(simulated_data_df['Time'], simulated_data_df['ExhaustTemp(°C)'].rolling(window=10).mean(), label='Exhaust Temp (°C)', color='blue')
@@ -97,7 +104,13 @@ def main():
                     ax2.set_xlabel('Time')
                     ax2.set_ylabel('Temperature (°C)')
                     ax2.legend()
+
+                    for anomaly_time in anomalies_timestamps:
+                        ax2.axvline(anomaly_time, color='red', linestyle='--')
+                    
                     graph_placeholder2.pyplot(fig2)
+
+                    
 
                     fig3, ax3 = plt.subplots(figsize=(15, 8))
                     ax3.plot(simulated_data_df['Time'], simulated_data_df['inLetPressure(KPa)'].rolling(window=10).mean(), label='Inlet Pressure (KPa)', color='blue')
@@ -105,6 +118,11 @@ def main():
                     ax3.set_xlabel('Time')
                     ax3.set_ylabel('Pressure (KPa)')
                     ax3.legend()
+
+                    for anomaly_time in anomalies_timestamps:
+                        ax3.axvline(anomaly_time, color='red', linestyle='--')
+
+                    
                     graph_placeholder3.pyplot(fig3)
 
                     data_placeholder.dataframe(simulated_data_df)
@@ -125,8 +143,12 @@ def main():
                             insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
                             send_email("Generator Anomaly Alert", diagnosis)
 
-                        accumulated_data = []  # Reset accumulated data after processing
+                        for idx in anomalies_indices:
+                            anomalies_timestamps.append(simulated_data_df['Time'].iloc[idx])
 
+                        # Reset index for new batch
+                        simulated_data_df.reset_index(drop=True, inplace=True)
+                        accumulated_data = []
                 time.sleep(5)
 
             except StopIteration:
