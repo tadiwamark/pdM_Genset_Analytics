@@ -7,6 +7,7 @@ def generate_parameter_value(range_min, range_max, anomaly_factor=1.0):
     Generates a random parameter value, optionally adjusted by an anomaly factor.
     """
     return np.random.uniform(range_min, range_max) * anomaly_factor
+    
 def simulate_anomalies(simulated_data):
     """
     Introduces anomalies into the simulated data based on predefined conditions.
@@ -20,14 +21,13 @@ def simulate_anomalies(simulated_data):
     elif anomaly_type == 'pressure':
         simulated_data['inLetPressure(KPa)'] *= np.random.uniform(0.5, 0.8)
     return simulated_data, anomaly_type
-def generate_continuous_data(start_time, end_time, interval='1min'):
-    print(f"Generating data from {start_time} to {end_time} with interval {interval}")
-    time_range = pd.date_range(start=start_time, end=end_time, freq=interval)
-    data_records = []
-    if time_range.empty:
-        print("The time range is empty. Check your start and end times.")
-        return pd.DataFrame()  # Return an empty DataFrame immediately
-    for current_time in time_range:
+    
+def generate_continuous_data(start_time):
+    print(f"Generating data from {start_time} with interval 5 seconds")
+
+    while True:
+        current_time = start_time + timedelta(seconds=5)
+        data_records = []
         simulated_data = {
             'Time': current_time.strftime('%m/%d/%Y %H:%M'),
             'AverageCurrent(A)': generate_parameter_value(150, 650),
@@ -49,6 +49,11 @@ def generate_continuous_data(start_time, end_time, interval='1min'):
         simulated_data, anomaly_type = simulate_anomalies(simulated_data)
         simulated_data['Anomaly_Type'] = anomaly_type
         data_records.append(simulated_data)
-    simulated_df = pd.DataFrame(data_records)
-    print(f"Generated {len(data_records)} records.")
-    return simulated_df
+        simulated_df = pd.DataFrame(data_records)
+
+        print(f"Generated {len(data_records)} records.")
+
+        yield pd.DataFrame([simulated_df])
+        
+        start_time = current_time
+        time.sleep(5) 
