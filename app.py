@@ -53,6 +53,9 @@ def main():
     graph_placeholder4 = st.empty()
     status_placeholder = st.empty()
 
+    if 'anomaly_queue' not in st.session_state:
+        st.session_state.anomaly_queue = Queue()
+
     if st.session_state['generator_on']:
         start_time = datetime.now()
         data_generator = generate_continuous_data(start_time)
