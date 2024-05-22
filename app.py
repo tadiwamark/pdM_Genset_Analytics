@@ -132,7 +132,11 @@ def main():
 
                     data_placeholder.dataframe(simulated_data_df)
 
+                    plt.close(fig1)
+                    plt.close(fig2)
                     plt.close(fig3)
+
+
 
                     if len(accumulated_data) >= 60:  # Process data every 60 records (5 minutes assuming 5 sec interval)
                         optimal_threshold = 0.7
@@ -152,7 +156,7 @@ def main():
                         for idx in anomalies_indices:
                             anomalies_timestamps.append(simulated_data_df['Time'].iloc[idx])
 
-                        return
+                        
                             
                     # Display insights from queue at regular intervals
                     if not st.session_state.anomaly_queue.empty():
