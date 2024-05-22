@@ -50,6 +50,7 @@ def main():
     graph_placeholder1 = st.empty()
     graph_placeholder2 = st.empty()
     graph_placeholder3 = st.empty()
+    graph_placeholder4 = st.empty()
     status_placeholder = st.empty()
 
     if st.session_state['generator_on']:
@@ -132,6 +133,15 @@ def main():
                         features = scaled_data.shape[1]
                         anomalies, real_predictions, fake_predictions = detect_anomalies(generator_model, discriminator_model, scaled_data_seq, features, numeric_columns)
                         real_predictions = discriminator_model.predict(scaled_data_seq)
+
+                        # Plot the distribution of discriminator scores for real data
+                        fig4, ax4 = plt.subplots(figsize=(15, 8))
+                        ax4.hist(real_predictions, bins=50, alpha=0.7)
+                        ax4.set_xlabel('Discriminator score')
+                        ax4.set_ylabel('Frequency')
+                        ax4.legend()
+                        graph_placeholder4.pyplot(fig4)
+                        
                         anomalies_indices = np.where(real_predictions < optimal_threshold)[0]
                         anomalies = scaled_data_seq[anomalies_indices]
                         anomalies_data = inverse_transform(anomalies.reshape(-1, features), scaler)
@@ -141,7 +151,7 @@ def main():
                         for prompt in anomaly_data:
                             diagnosis = generate_diagnosis_and_recommendation(prompt)
                             insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
-                            send_email("Generator Anomaly Alert", diagnosis)
+                            #send_email("Generator Anomaly Alert", diagnosis)
 
                         for idx in anomalies_indices:
                             anomalies_timestamps.append(simulated_data_df['Time'].iloc[idx])
