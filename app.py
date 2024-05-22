@@ -132,6 +132,8 @@ def main():
 
                     data_placeholder.dataframe(simulated_data_df)
 
+                    plt.close(fig3)
+
                     if len(accumulated_data) >= 60:  # Process data every 60 records (5 minutes assuming 5 sec interval)
                         optimal_threshold = 0.7
                         features = scaled_data.shape[1]
