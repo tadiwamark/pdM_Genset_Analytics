@@ -149,16 +149,24 @@ def main():
                         anomaly_data = generate_prompts_from_anomalies(anomalies_df)
 
                         for prompt in anomaly_data:
-                            diagnosis = generate_diagnosis_and_recommendation(prompt)
-                            insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
-                            #send_email("Generator Anomaly Alert", diagnosis)
+                            st.session_state.anomaly_queue.put(prompt)
 
                         for idx in anomalies_indices:
                             anomalies_timestamps.append(simulated_data_df['Time'].iloc[idx])
+                            
+                    # Display insights from queue at regular intervals
+                    if not st.session_state.anomaly_queue.empty():
+                        prompt = st.session_state.anomaly_queue.get()
+                        diagnosis = generate_diagnosis_and_recommendation(prompt)
+                        insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
+                        # Uncomment the following line to enable email alerts
+                        # send_email("Generator Anomaly Alert", diagnosis)
+                        time.sleep(10)
 
-                        # Reset index for new batch, keep last 60 records for continuity
-                        simulated_data_df = simulated_data_df.iloc[-60:].reset_index(drop=True)
-                        accumulated_data = [simulated_data_df]
+                    # Reset index for new batch, keep last 60 records for continuity
+                    simulated_data_df = simulated_data_df.iloc[-60:].reset_index(drop=True)
+                    accumulated_data = [simulated_data_df]
+                
                 time.sleep(1)
 
             except StopIteration:
