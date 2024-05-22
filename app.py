@@ -149,7 +149,7 @@ def main():
                         # Reset index for new batch, keep last 60 records for continuity
                         simulated_data_df = simulated_data_df.iloc[-60:].reset_index(drop=True)
                         accumulated_data = [simulated_data_df]
-                time.sleep(5)
+                time.sleep(1)
 
             except StopIteration:
                 break
