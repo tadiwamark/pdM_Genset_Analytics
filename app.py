@@ -9,6 +9,7 @@ import openai
 import os
 import urllib.request
 from datetime import datetime, timedelta
+from queue import Queue
 from generator_script import generate_continuous_data
 from model_utils import detect_anomalies, generate_diagnosis_and_recommendation, generate_prompts_from_anomalies, inverse_transform, create_sequences, load_model_from_github, send_email
 from sklearn.preprocessing import StandardScaler
