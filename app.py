@@ -23,10 +23,10 @@ generator_loss = 'binary_crossentropy'
 discriminator_loss = 'binary_crossentropy'
 
 # Load Model
-generator = load_model_from_github(generator_path)
-discriminator = load_model_from_github(discriminator_path)
-generator.compile(optimizer=optimizer, loss=generator_loss)
-discriminator.compile(optimizer=optimizer, loss=discriminator_loss)
+generator_model = load_model_from_github(generator_path)
+discriminator_model = load_model_from_github(discriminator_path)
+generator_model.compile(optimizer=optimizer, loss=generator_loss)
+discriminator_model.compile(optimizer=optimizer, loss=discriminator_loss)
 
 def main():
     st.title('FG Wilson Generator Monitoring Dashboard')
@@ -54,13 +54,13 @@ def main():
 
     if st.session_state['generator_on']:
         start_time = datetime.now()
-        generator = generate_continuous_data(start_time)
+        data_generator = generate_continuous_data(start_time)
         simulated_data_df = pd.DataFrame()
         accumulated_data = []
 
         while st.session_state['generator_on']:
             try:
-                new_data = next(generator)
+                new_data = next(data_generator)
                 accumulated_data.append(new_data)
                 simulated_data_df = pd.concat(accumulated_data).reset_index(drop=True)
 
@@ -112,8 +112,8 @@ def main():
                     if len(accumulated_data) >= 60:  # Process data every 60 records (5 minutes assuming 5 sec interval)
                         optimal_threshold = 0.7
                         features = scaled_data.shape[1]
-                        anomalies, real_predictions, fake_predictions = detect_anomalies(generator, discriminator, scaled_data_seq, features, numeric_columns)
-                        real_predictions = discriminator.predict(scaled_data_seq)
+                        anomalies, real_predictions, fake_predictions = detect_anomalies(generator_model, discriminator_model, scaled_data_seq, features, numeric_columns)
+                        real_predictions = discriminator_model.predict(scaled_data_seq)
                         anomalies_indices = np.where(real_predictions < optimal_threshold)[0]
                         anomalies = scaled_data_seq[anomalies_indices]
                         anomalies_data = inverse_transform(anomalies.reshape(-1, features), scaler)
