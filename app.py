@@ -146,9 +146,9 @@ def main():
                         for idx in anomalies_indices:
                             anomalies_timestamps.append(simulated_data_df['Time'].iloc[idx])
 
-                        # Reset index for new batch
-                        simulated_data_df.reset_index(drop=True, inplace=True)
-                        accumulated_data = []
+                        # Reset index for new batch, keep last 60 records for continuity
+                        simulated_data_df = simulated_data_df.iloc[-60:].reset_index(drop=True)
+                        accumulated_data = [simulated_data_df]
                 time.sleep(5)
 
             except StopIteration:
