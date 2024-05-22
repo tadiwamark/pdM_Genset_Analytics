@@ -125,7 +125,7 @@ def main():
                     # Anomaly detection and insights
                     optimal_threshold = 0.7
                     features = scaled_data.shape[1]
-                    anomalies, real_predictions, fake_predictions = detect_anomalies(generator, discriminator, scaled_data_seq, numeric_columns,features)
+                    anomalies, real_predictions, fake_predictions = detect_anomalies(generator, discriminator, scaled_data_seq, features, numeric_columns)
                     real_predictions = discriminator.predict(scaled_data_seq)
                     anomalies_indices = np.where(real_predictions < optimal_threshold)[0]
                     anomalies = scaled_data_seq[anomalies_indices]
