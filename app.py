@@ -51,7 +51,7 @@ def main():
   # Main dashboard for displaying generator data and insights
   data_placeholder = st.empty()
   insights_placeholder = st.empty()
-  graph_placeholder = st.empty()
+  graph_placeholder1 = st.empty()
   graph_placeholder2 = st.empty()
   graph_placeholder3 = st.empty()
   status_placeholder = st.empty()
