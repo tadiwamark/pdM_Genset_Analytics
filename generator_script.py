@@ -26,7 +26,7 @@ def generate_continuous_data(start_time):
     print(f"Generating data from {start_time} with interval 5 seconds")
 
     while True:
-        current_time = start_time + timedelta(seconds=1)
+        current_time = start_time + timedelta(seconds=5)
         data_records = []
         simulated_data = {
             'Time': current_time,
