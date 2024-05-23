@@ -38,20 +38,20 @@ def generate_continuous_data(start_time):
         data_records = []
         simulated_data = {
             'Time': current_time,
-            'AverageCurrent(A)': generate_parameter_value(150, 600),
-            'Phase1Current(A)': generate_parameter_value(150, 600),
-            'Phase2Current(A)': generate_parameter_value(150, 600),
-            'Phase3Current(A)': generate_parameter_value(150, 600),
-            'ExhaustTemp(°C)': generate_parameter_value(235, 750),
-            'inLetPressure(KPa)': generate_parameter_value(20, 100),
-            'outLetPressure(KPa)': generate_parameter_value(20, 100),
-            'OutLetAirTemp(°C)': generate_parameter_value(24, 39),
-            'CoolantTemp( °C)': generate_parameter_value(48, 73),
-            'OilPressure(KPa)': generate_parameter_value(133, 426),
+            'AverageCurrent(A)': generate_parameter_value(290, 400),
+            'Phase1Current(A)': generate_parameter_value(350, 400),
+            'Phase2Current(A)': generate_parameter_value(400, 420),
+            'Phase3Current(A)': generate_parameter_value(380, 400),
+            'ExhaustTemp(°C)': generate_parameter_value(480, 500),
+            'inLetPressure(KPa)': generate_parameter_value(50, 70),
+            'outLetPressure(KPa)': generate_parameter_value(50, 70),
+            'OutLetAirTemp(°C)': generate_parameter_value(27, 29),
+            'CoolantTemp( °C)': generate_parameter_value(60, 73),
+            'OilPressure(KPa)': generate_parameter_value(340, 360),
             'PowerFactor': generate_parameter_value(0.8, 1),
-            'Speed(Rpm)': generate_parameter_value(1200, 1500),
-            'AmbientTemp(°C)': generate_parameter_value(29, 33),
-            'FuelLevel(Ltrs)': generate_parameter_value(1340, 1500),
+            'Speed(Rpm)': generate_parameter_value(1450, 1470),
+            'AmbientTemp(°C)': generate_parameter_value(29, 31),
+            'FuelLevel(Ltrs)': generate_parameter_value(1200, 1250),
             'Freq(Hz)': generate_parameter_value(47, 50)
         }
         
