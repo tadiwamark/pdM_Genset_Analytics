@@ -1,3 +1,4 @@
+#app.py
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -14,7 +15,7 @@ from generator_script import generate_continuous_data
 from model_utils import detect_anomalies, generate_diagnosis_and_recommendation, generate_prompts_from_anomalies, inverse_transform, create_sequences, load_model_from_github, send_email
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
+
 
 # Paths to files
 generator_path = 'https://github.com/tadiwamark/pdM_Genset_Analytics/releases/download/gan/generator_model.h5'
@@ -53,7 +54,6 @@ def main():
     graph_placeholder3 = st.empty()
     graph_placeholder4 = st.empty()
     status_placeholder = st.empty()
-    anomaly_detection_placeholder = st.empty()
 
     if 'anomaly_queue' not in st.session_state:
         st.session_state.anomaly_queue = Queue()
