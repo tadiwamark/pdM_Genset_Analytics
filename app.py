@@ -157,8 +157,8 @@ def main():
                         for idx in anomalies_indices:
                             anomalies_timestamps.append(simulated_data_df['Time'].iloc[idx])
 
-                        # Display anomaly data on the website
-                        anomaly_data_placeholder.dataframe(anomalies_df)
+                        # Display success message if anomaly detection model has run
+                        anomaly_detection_placeholder.success("Anomaly detection model has run successfully and prompts have been stored in the queue.")
 
                         
                         # Display insights from queue at regular intervals
