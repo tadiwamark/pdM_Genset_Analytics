@@ -11,6 +11,7 @@ import os
 import urllib.request
 from datetime import datetime, timedelta
 from queue import Queue
+from threading import Thread
 from generator_script import generate_continuous_data
 from model_utils import detect_anomalies, generate_diagnosis_and_recommendation, generate_prompts_from_anomalies, inverse_transform, create_sequences, load_model_from_github, send_email
 from sklearn.preprocessing import StandardScaler
@@ -29,6 +30,23 @@ generator_model = load_model_from_github(generator_path)
 discriminator_model = load_model_from_github(discriminator_path)
 generator_model.compile(optimizer=optimizer, loss=generator_loss)
 discriminator_model.compile(optimizer=optimizer, loss=discriminator_loss)
+
+def display_insights():
+    insights_placeholder = st.empty()
+    while True:
+        if not st.session_state.anomaly_queue.empty():
+            prompt = st.session_state.anomaly_queue.get()
+            if prompt:
+                diagnosis = generate_diagnosis_and_recommendation(prompt)
+                if diagnosis:
+                    insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
+                else:
+                    insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\nNo recommendations available.")
+            else:
+                insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\nNo prompts generated.")
+        time.sleep(5)
+
+
 
 def main():
     st.title('FG Wilson Generator Monitoring Dashboard')
@@ -64,6 +82,9 @@ def main():
         simulated_data_df = pd.DataFrame()
         accumulated_data = []
         anomalies_timestamps = []
+
+        # Start the insights display thread
+        Thread(target=display_insights, daemon=True).start()
 
         while st.session_state['generator_on']:
             try:
@@ -157,19 +178,9 @@ def main():
                         for idx in anomalies_indices:
                             anomalies_timestamps.append(simulated_data_df['Time'].iloc[idx])
 
-                        # Display insights from queue at regular intervals
-                        if not st.session_state.anomaly_queue.empty():
-                            prompt = st.session_state.anomaly_queue.get()
-                            if prompt:
-                                diagnosis = generate_diagnosis_and_recommendation(prompt)
-                                if diagnosis:
-                                    insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
-                                else:
-                                    insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\nNo recommendations available.")
-                            else:
-                                insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\nNo prompts generated.")
-    
 
+                        # Display success message if anomaly detection model has run
+                        anomaly_detection_placeholder.success("Anomaly detection model has run successfully and prompts have been stored in the queue.")
                         
     
                         # Reset index for new batch, keep last 60 records for continuity
