@@ -11,7 +11,6 @@ import os
 import urllib.request
 from datetime import datetime, timedelta
 from queue import Queue
-from threading import Thread
 from generator_script import generate_continuous_data
 from model_utils import detect_anomalies, generate_diagnosis_and_recommendation, generate_prompts_from_anomalies, inverse_transform, create_sequences, load_model_from_github, send_email
 from sklearn.preprocessing import StandardScaler
@@ -31,21 +30,6 @@ discriminator_model = load_model_from_github(discriminator_path)
 generator_model.compile(optimizer=optimizer, loss=generator_loss)
 discriminator_model.compile(optimizer=optimizer, loss=discriminator_loss)
 
-def display_insights():
-    insights_placeholder = st.empty()
-    while True:
-        if not st.session_state.anomaly_queue.empty():
-            prompt = st.session_state.anomaly_queue.get()
-            if prompt:
-                diagnosis = generate_diagnosis_and_recommendation(prompt)
-                if diagnosis:
-                    insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
-                else:
-                    insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\nNo recommendations available.")
-            else:
-                insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\nNo prompts generated.")
-        time.sleep(5)
-
 
 
 def main():
@@ -64,9 +48,6 @@ def main():
 
     if generator_state:
         st.session_state['generator_on'] = not st.session_state['generator_on']
-
-    if 'insights' not in st.session_state:
-        st.session_state['insights'] = ""
 
     data_placeholder = st.empty()
     insights_placeholder = st.empty()
@@ -197,6 +178,19 @@ def main():
                         # Reset index for new batch, keep last 60 records for continuity
                         simulated_data_df = simulated_data_df.iloc[-60:].reset_index(drop=True)
                         accumulated_data = [simulated_data_df]
+
+                # Display insights from queue at regular intervals
+                if not st.session_state.anomaly_queue.empty():
+                    prompt = st.session_state.anomaly_queue.get()
+                    if prompt:
+                        diagnosis = generate_diagnosis_and_recommendation(prompt)
+                        if diagnosis:
+                            insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
+                        else:
+                            insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\nNo recommendations available.")
+                    else:
+                        insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\nNo prompts generated.")
+                
                 
                 time.sleep(1)
 
