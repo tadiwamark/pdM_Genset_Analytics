@@ -165,7 +165,6 @@ def main():
                             insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
                             # Uncomment the following line to enable email alerts
                             # send_email("Generator Anomaly Alert", diagnosis)
-                            time.sleep(10)
     
                         # Reset index for new batch, keep last 60 records for continuity
                         simulated_data_df = simulated_data_df.iloc[-60:].reset_index(drop=True)
