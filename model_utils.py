@@ -27,6 +27,8 @@ from email.mime.multipart import MIMEMultipart
 # Model hyperparameters
 sequence_length = 10
 
+client = OpenAI()
+
 
 # Anomaly detection
 def detect_anomalies(generator, discriminator, scaled_data_seq, features, numerical_features, threshold=0.5):
