@@ -69,8 +69,6 @@ def main():
         accumulated_data = []
         anomalies_timestamps = []
 
-        # Start the insights display thread
-        Thread(target=display_insights, daemon=True).start()
 
         while st.session_state['generator_on']:
             try:
