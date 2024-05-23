@@ -61,12 +61,6 @@ def main():
     if 'anomaly_queue' not in st.session_state:
         st.session_state.anomaly_queue = Queue()
 
-    # Start the insights display thread
-    if not 'insights_thread' in st.session_state:
-        st.session_state['insights_thread'] = Thread(target=display_insights, daemon=True)
-        st.session_state['insights_thread'].start()
-
-    st.markdown(st.session_state.insights)
 
     if st.session_state['generator_on']:
         start_time = datetime.now()
