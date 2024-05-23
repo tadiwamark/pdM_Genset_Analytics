@@ -20,6 +20,9 @@ def simulate_anomalies(simulated_data):
                                     p=[0.0, 0.0, 0.0, 1.0])  
     if anomaly_type == 'electrical':
         simulated_data['AverageCurrent(A)'] *= np.random.uniform(1.2, 1.5)
+        simulated_data['Phase1Current(A)'] *= np.random.uniform(1.2, 1.5)
+        simulated_data['Phase2Current(A)'] *= np.random.uniform(1.2, 1.5)
+        simulated_data['Phase3Current(A)'] *= np.random.uniform(1.2, 1.5)
     elif anomaly_type == 'temperature':
         simulated_data['ExhaustTemp(°C)'] += np.random.uniform(20, 70)
     elif anomaly_type == 'pressure':
