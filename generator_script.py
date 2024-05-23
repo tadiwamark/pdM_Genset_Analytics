@@ -48,7 +48,7 @@ def generate_continuous_data(start_time):
             'OutLetAirTemp(°C)': generate_parameter_value(27, 29),
             'CoolantTemp( °C)': generate_parameter_value(60, 73),
             'OilPressure(KPa)': generate_parameter_value(340, 360),
-            'PowerFactor': generate_parameter_value(0.8, 1),
+            'PowerFactor': generate_parameter_value(1, 1),
             'Speed(Rpm)': generate_parameter_value(1450, 1470),
             'AmbientTemp(°C)': generate_parameter_value(29, 31),
             'FuelLevel(Ltrs)': generate_parameter_value(1200, 1250),
