@@ -17,7 +17,7 @@ def simulate_anomalies(simulated_data):
     Introduces anomalies into the simulated data based on predefined conditions.
     """
     anomaly_type = np.random.choice(['electrical', 'temperature', 'pressure', 'none'],
-                                    p=[0.2, 0.2, 0.2, 0.4])  # Adjust probabilities as needed
+                                    p=[0.1, 0.1, 0.1, 0.7])  
     if anomaly_type == 'electrical':
         simulated_data['AverageCurrent(A)'] *= np.random.uniform(1.2, 1.5)
     elif anomaly_type == 'temperature':
