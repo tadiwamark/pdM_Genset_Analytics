@@ -38,10 +38,10 @@ def generate_continuous_data(start_time):
         data_records = []
         simulated_data = {
             'Time': current_time,
-            'AverageCurrent(A)': generate_parameter_value(376, 378),
-            'Phase1Current(A)': generate_parameter_value(408, 410),
-            'Phase2Current(A)': generate_parameter_value(323, 325),
-            'Phase3Current(A)': generate_parameter_value(397, 399),
+            'AverageCurrent(A)': generate_parameter_value(400, 420),
+            'Phase1Current(A)': generate_parameter_value(400, 420),
+            'Phase2Current(A)': generate_parameter_value(400, 420),
+            'Phase3Current(A)': generate_parameter_value(400, 420),
             'ExhaustTemp(°C)': generate_parameter_value(480, 500),
             'inLetPressure(KPa)': generate_parameter_value(50, 70),
             'outLetPressure(KPa)': generate_parameter_value(50, 70),
