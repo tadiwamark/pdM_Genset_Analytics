@@ -13,23 +13,31 @@ import openai
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+
+
 # Model hyperparameters
 sequence_length = 10
+
 # Anomaly detection
 def detect_anomalies(generator, discriminator, scaled_data_seq, features, numerical_features, threshold=0.5):
-    features = features  # Dynamically capture the number of features from data
+    features = features  
     # Generate fake sequences
     batch_size = scaled_data_seq.shape[0]
     sequence_length = 10
     random_latent_vectors = tf.random.normal(shape=(batch_size, sequence_length, features))
     generated_sequences = generator.predict(random_latent_vectors)
+    
     # Get discriminator predictions for both real and fake data
     real_predictions = discriminator.predict(scaled_data_seq)
     fake_predictions = discriminator.predict(generated_sequences)
+    
     # Identify real sequences that are classified as fake
     anomalies_indices = np.where(real_predictions.flatten() < threshold)[0]
     anomalies = scaled_data_seq[anomalies_indices]
+    
     return anomalies, real_predictions, fake_predictions
+
+
 def query_model(messages):
     """
     Query the fine-tuned GPT-3.5 Turbo model with a prompt and return the response.
@@ -46,9 +54,13 @@ def query_model(messages):
             return response.choices[0].message.content
         else:
             return "No response from the model."
+            
     except Exception as e:
         print(f"Error querying model: {e}")
+        
         return None
+
+
 def generate_diagnosis_and_recommendation(anomaly_data):
     """
     Generate a prompt from anomaly data and query the model for diagnosis and recommendation.
@@ -65,7 +77,10 @@ def generate_diagnosis_and_recommendation(anomaly_data):
         st.error(f"Error: {e}")
     else:
       st.error("OpenAI API Key is missing. Please enter the API Key.")
+        
     return response
+
+
 def generate_prompts_from_anomalies(df):
     """
     Takes a DataFrame of anomalies and generates a list of prompts for each row.
@@ -80,6 +95,7 @@ def generate_prompts_from_anomalies(df):
     
     # Build the prompt string by iterating over each column and its value in the row
     anomaly_prompts = []
+    
     # Iterate over each row in the DataFrame
     for index, row in df.iterrows():
         # Build the prompt string by iterating over each column and its value in the row
@@ -88,32 +104,42 @@ def generate_prompts_from_anomalies(df):
         prompt += " what are the potential issues and recommended actions?"
         # Append the complete prompt to the list
         anomaly_prompts.append(prompt)
+        
     return anomaly_prompts
+
+
 def inverse_transform(scaled_data, scaler):
   return scaler.inverse_transform(scaled_data)
-    
+
+
 def create_sequences(data, seq_length):
     xs = []
     for i in range(len(data) - seq_length):
         sequence = data[i:(i + seq_length)]
         xs.append(sequence)
     return np.array(xs)
+
+
 def load_model_from_github(url):
     filename = url.split('/')[-1]
     urllib.request.urlretrieve(url, filename)
     custom_objects = {'TransformerEncoderBlock': TransformerEncoderBlock}
     loaded_model = tf.keras.models.load_model(filename, custom_objects=custom_objects)
     return loaded_model
+
+
 def download_and_load_scaler(url):
     try:
         response = requests.get(url, stream=True)
         response.raise_for_status()
         with gzip.open(response.raw, 'rb') as gz:
             scaler = pickle.load(gz)
-            return scaler  # Ensure this is a scaler object
+            return scaler  
     except Exception as e:
         print(f"Failed to download or load the scaler: {e}")
         return None
+
+
 # Email alert function
 def send_email(subject, body):
     sender_email = "pdm_genset_alerts_24@outlook.com"
