@@ -157,14 +157,25 @@ def main():
                             anomalies_timestamps.append(simulated_data_df['Time'].iloc[idx])
 
                         
-                            
                         # Display insights from queue at regular intervals
+                        if not st.session_state.anomaly_queue.empty():
+                            prompt = st.session_state.anomaly_queue.get()
+                            if prompt:
+                                diagnosis = generate_diagnosis_and_recommendation(prompt)
+                                if diagnosis:
+                                    insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
+                                else:
+                                    insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\nNo recommendations available.")
+                            else:
+                                insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\nNo prompts generated.")
+      
+                        """# Display insights from queue at regular intervals
                         if not st.session_state.anomaly_queue.empty():
                             prompt = st.session_state.anomaly_queue.get()
                             diagnosis = generate_diagnosis_and_recommendation(prompt)
                             insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
                             # Uncomment the following line to enable email alerts
-                            # send_email("Generator Anomaly Alert", diagnosis)
+                            # send_email("Generator Anomaly Alert", diagnosis)"""
     
                         # Reset index for new batch, keep last 60 records for continuity
                         simulated_data_df = simulated_data_df.iloc[-60:].reset_index(drop=True)
