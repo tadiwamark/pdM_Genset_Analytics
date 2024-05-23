@@ -151,17 +151,24 @@ def main():
                         anomalies_df = pd.DataFrame(anomalies_data, columns=numeric_columns)
                         anomaly_data = generate_prompts_from_anomalies(anomalies_df)
                         
-                        # Display success message if anomaly detection model has run
-                        anomaly_detection_placeholder.success("Anomaly detection model has run successfully and prompts have been stored in the queue.")
-
+                        for prompt in anomaly_data:
+                            st.session_state.anomaly_queue.put(prompt)
+                            
                         for idx in anomalies_indices:
                             anomalies_timestamps.append(simulated_data_df['Time'].iloc[idx])
 
-                        # Generate prompts for each anomaly
-                        for prompt in anomaly_data:
-                            diagnosis = generate_diagnosis_and_recommendation(prompt)
-                            insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
-            
+                        # Display insights from queue at regular intervals
+                        if not st.session_state.anomaly_queue.empty():
+                            prompt = st.session_state.anomaly_queue.get()
+                            if prompt:
+                                diagnosis = generate_diagnosis_and_recommendation(prompt)
+                                if diagnosis:
+                                    insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
+                                else:
+                                    insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\nNo recommendations available.")
+                            else:
+                                insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\nNo prompts generated.")
+    
 
                         
     
