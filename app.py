@@ -165,23 +165,24 @@ def main():
 
                         # Display success message if anomaly detection model has run
                         anomaly_detection_placeholder.success("Anomaly detection model has run successfully and prompts have been stored in the queue.")
+
+                        # Display insights from queue at regular intervals
+                        if not st.session_state.anomaly_queue.empty():
+                            prompt = st.session_state.anomaly_queue.get()
+                            if prompt:
+                                diagnosis = generate_diagnosis_and_recommendation(prompt)
+                                if diagnosis:
+                                    insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
+                                else:
+                                    insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\nNo recommendations available.")
+                            else:
+                                insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\nNo prompts generated.")
                         
     
                         # Reset index for new batch, keep last 60 records for continuity
                         simulated_data_df = simulated_data_df.iloc[-60:].reset_index(drop=True)
                         accumulated_data = [simulated_data_df]
 
-                # Display insights from queue at regular intervals
-                if not st.session_state.anomaly_queue.empty():
-                    prompt = st.session_state.anomaly_queue.get()
-                    if prompt:
-                        diagnosis = generate_diagnosis_and_recommendation(prompt)
-                        if diagnosis:
-                            insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
-                        else:
-                            insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\nNo recommendations available.")
-                    else:
-                        insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\nNo prompts generated.")
                 
                 
                 time.sleep(1)
