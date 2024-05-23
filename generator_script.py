@@ -2,12 +2,15 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 import time
+
+
 def generate_parameter_value(range_min, range_max, anomaly_factor=1.0):
     """
     Generates a random parameter value, optionally adjusted by an anomaly factor.
     """
     return np.random.uniform(range_min, range_max) * anomaly_factor
-    
+
+
 def simulate_anomalies(simulated_data):
     """
     Introduces anomalies into the simulated data based on predefined conditions.
@@ -21,7 +24,8 @@ def simulate_anomalies(simulated_data):
     elif anomaly_type == 'pressure':
         simulated_data['inLetPressure(KPa)'] *= np.random.uniform(0.5, 0.8)
     return simulated_data, anomaly_type
-    
+
+
 def generate_continuous_data(start_time):
     print(f"Generating data from {start_time} with interval 5 seconds")
 
