@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import time
 
 
-def generate_parameter_value(range_min, range_max, anomaly_factor=0.1):
+def generate_parameter_value(range_min, range_max, anomaly_factor=1.0):
     """
     Generates a random parameter value, optionally adjusted by an anomaly factor.
     """
