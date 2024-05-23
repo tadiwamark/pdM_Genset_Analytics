@@ -35,21 +35,21 @@ def generate_continuous_data(start_time):
         data_records = []
         simulated_data = {
             'Time': current_time,
-            'AverageCurrent(A)': generate_parameter_value(150, 650),
-            'Phase1Current(A)': generate_parameter_value(150, 650),
-            'Phase2Current(A)': generate_parameter_value(150, 650),
-            'Phase3Current(A)': generate_parameter_value(150, 650),
+            'AverageCurrent(A)': generate_parameter_value(0, 1000),
+            'Phase1Current(A)': generate_parameter_value(0, 1000),
+            'Phase2Current(A)': generate_parameter_value(0, 1000),
+            'Phase3Current(A)': generate_parameter_value(0, 1000),
             'ExhaustTemp(°C)': generate_parameter_value(500, 750),
-            'inLetPressure(KPa)': generate_parameter_value(25, 100),
-            'outLetPressure(KPa)': generate_parameter_value(20, 90),
-            'OutLetAirTemp(°C)': generate_parameter_value(20, 41),
-            'CoolantTemp( °C)': generate_parameter_value(30, 95),
-            'OilPressure(KPa)': generate_parameter_value(200, 500),
-            'PowerFactor': generate_parameter_value(0.8, 1.2),
-            'Speed(Rpm)': generate_parameter_value(1200, 1700),
-            'AmbientTemp(°C)': generate_parameter_value(25, 35),
+            'inLetPressure(KPa)': generate_parameter_value(20, 200),
+            'outLetPressure(KPa)': generate_parameter_value(20, 200),
+            'OutLetAirTemp(°C)': generate_parameter_value(24, 41),
+            'CoolantTemp( °C)': generate_parameter_value(48, 73),
+            'OilPressure(KPa)': generate_parameter_value(133, 426),
+            'PowerFactor': generate_parameter_value(0.8, 1),
+            'Speed(Rpm)': generate_parameter_value(1200, 1500),
+            'AmbientTemp(°C)': generate_parameter_value(29, 33),
             'FuelLevel(Ltrs)': generate_parameter_value(1340, 1500),
-            'Freq(Hz)': generate_parameter_value(0, 60)
+            'Freq(Hz)': generate_parameter_value(47, 50)
         }
         
         simulated_data, anomaly_type = simulate_anomalies(simulated_data)
