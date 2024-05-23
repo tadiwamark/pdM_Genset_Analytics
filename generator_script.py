@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import time
 
 
-def generate_parameter_value(range_min, range_max, anomaly_factor=1.0):
+def generate_parameter_value(range_min, range_max, anomaly_factor=1.2):
     """
     Generates a random parameter value, optionally adjusted by an anomaly factor.
     """
@@ -17,7 +17,7 @@ def simulate_anomalies(simulated_data):
     Introduces anomalies into the simulated data based on predefined conditions.
     """
     anomaly_type = np.random.choice(['electrical', 'temperature', 'pressure', 'none'],
-                                    p=[0.1, 0.1, 0.1, 0.7])  
+                                    p=[0.0, 0.0, 0.0, 1.0])  
     if anomaly_type == 'electrical':
         simulated_data['AverageCurrent(A)'] *= np.random.uniform(1.2, 1.5)
     elif anomaly_type == 'temperature':
