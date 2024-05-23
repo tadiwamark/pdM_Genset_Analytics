@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import time
 
 
-def generate_parameter_value(range_min, range_max, anomaly_factor=1.2):
+def generate_parameter_value(range_min, range_max, anomaly_factor=1.0):
     """
     Generates a random parameter value, optionally adjusted by an anomaly factor.
     """
@@ -38,14 +38,14 @@ def generate_continuous_data(start_time):
         data_records = []
         simulated_data = {
             'Time': current_time,
-            'AverageCurrent(A)': generate_parameter_value(0, 1000),
-            'Phase1Current(A)': generate_parameter_value(0, 1000),
-            'Phase2Current(A)': generate_parameter_value(0, 1000),
-            'Phase3Current(A)': generate_parameter_value(0, 1000),
-            'ExhaustTemp(°C)': generate_parameter_value(500, 750),
-            'inLetPressure(KPa)': generate_parameter_value(20, 200),
-            'outLetPressure(KPa)': generate_parameter_value(20, 200),
-            'OutLetAirTemp(°C)': generate_parameter_value(24, 41),
+            'AverageCurrent(A)': generate_parameter_value(150, 600),
+            'Phase1Current(A)': generate_parameter_value(150, 600),
+            'Phase2Current(A)': generate_parameter_value(150, 600),
+            'Phase3Current(A)': generate_parameter_value(150, 600),
+            'ExhaustTemp(°C)': generate_parameter_value(235, 750),
+            'inLetPressure(KPa)': generate_parameter_value(20, 100),
+            'outLetPressure(KPa)': generate_parameter_value(20, 100),
+            'OutLetAirTemp(°C)': generate_parameter_value(24, 39),
             'CoolantTemp( °C)': generate_parameter_value(48, 73),
             'OilPressure(KPa)': generate_parameter_value(133, 426),
             'PowerFactor': generate_parameter_value(0.8, 1),
