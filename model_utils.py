@@ -56,7 +56,7 @@ def query_model(messages):
     """
 
     try:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="ft:gpt-3.5-turbo-1106:personal::8rMBgWJN",
             messages=messages,
             temperature=1,
