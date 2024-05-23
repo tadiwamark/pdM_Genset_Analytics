@@ -53,7 +53,7 @@ def main():
     graph_placeholder3 = st.empty()
     graph_placeholder4 = st.empty()
     status_placeholder = st.empty()
-    anomaly_data_placeholder = st.empty()
+    anomaly_detection_placeholder = st.empty()
 
     if 'anomaly_queue' not in st.session_state:
         st.session_state.anomaly_queue = Queue()
