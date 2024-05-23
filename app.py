@@ -53,6 +53,7 @@ def main():
     graph_placeholder3 = st.empty()
     graph_placeholder4 = st.empty()
     status_placeholder = st.empty()
+    anomaly_data_placeholder = st.empty()
 
     if 'anomaly_queue' not in st.session_state:
         st.session_state.anomaly_queue = Queue()
@@ -155,6 +156,9 @@ def main():
 
                         for idx in anomalies_indices:
                             anomalies_timestamps.append(simulated_data_df['Time'].iloc[idx])
+
+                        # Display anomaly data on the website
+                        anomaly_data_placeholder.dataframe(anomalies_df)
 
                         
                         # Display insights from queue at regular intervals
