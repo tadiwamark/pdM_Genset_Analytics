@@ -2,24 +2,30 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 import time
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class AnomalySimulator:
-    def __init__(self):
+    def __init__(self, config):
         self.anomaly_active = False
         self.anomaly_type = 'none'
         self.anomaly_start = None
         self.anomaly_duration = 0
         self.anomaly_progress = 0
+        self.config = config
 
     def start_anomaly(self):
         self.anomaly_type = np.random.choice(['electrical', 'temperature', 'pressure'],
-                                             p=[0.4, 0.3, 0.3])
+                                             p=self.config['anomaly_probabilities'])
         self.anomaly_duration = np.random.randint(10, 30)  # Anomaly duration in iterations
         self.anomaly_progress = 0
         self.anomaly_active = True
+        logging.info(f"Starting anomaly: {self.anomaly_type} for {self.anomaly_duration} iterations")
 
     def simulate_anomalies(self, simulated_data):
-        if not self.anomaly_active and np.random.rand() < 0.1:  # 10% chance to start an anomaly
+        if not self.anomaly_active and np.random.rand() < self.config['anomaly_start_probability']:
             self.start_anomaly()
 
         if self.anomaly_active:
@@ -43,20 +49,22 @@ class AnomalySimulator:
             if self.anomaly_progress >= self.anomaly_duration:
                 self.anomaly_active = False
                 self.anomaly_type = 'none'
+                logging.info(f"Anomaly ended")
 
         return simulated_data, self.anomaly_type
 
 
-def generate_parameter_value(range_min, range_max, anomaly_factor=1.0):
+def generate_parameter_value(range_min, range_max, trend=0):
     """
-    Generates a random parameter value, optionally adjusted by an anomaly factor.
+    Generates a random parameter value, optionally adjusted by a trend factor.
     """
-    return np.random.uniform(range_min, range_max) * anomaly_factor
+    return np.random.uniform(range_min, range_max) + trend
 
 
-def generate_continuous_data(start_time):
-    print(f"Generating data from {start_time} with interval 5 seconds")
-    anomaly_simulator = AnomalySimulator()
+def generate_continuous_data(start_time, config):
+    logging.info(f"Generating data from {start_time} with interval 5 seconds")
+    anomaly_simulator = AnomalySimulator(config)
+    fuel_trend = 0
 
     while True:
         current_time = start_time + timedelta(seconds=5)
@@ -76,7 +84,7 @@ def generate_continuous_data(start_time):
             'PowerFactor': generate_parameter_value(0.95, 1.0),
             'Speed(Rpm)': generate_parameter_value(1450, 1550),
             'AmbientTemp(°C)': generate_parameter_value(25, 35),
-            'FuelLevel(Ltrs)': generate_parameter_value(1100, 1250),
+            'FuelLevel(Ltrs)': generate_parameter_value(1100, 1250, fuel_trend),
             'Freq(Hz)': generate_parameter_value(48, 52)
         }
 
@@ -85,9 +93,10 @@ def generate_continuous_data(start_time):
         data_records.append(simulated_data)
         simulated_df = pd.DataFrame(data_records)
 
-        print(f"Generated {len(data_records)} records. Current anomaly: {anomaly_type}")
+        logging.info(f"Generated {len(data_records)} records. Current anomaly: {anomaly_type}")
 
         yield simulated_df
 
         start_time = current_time
-        time.sleep(1)  # Keep interval at 5 seconds
+        fuel_trend -= 0.1  # Simulate gradual fuel consumption
+        time.sleep(1)  
