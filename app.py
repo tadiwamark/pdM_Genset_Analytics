@@ -174,6 +174,7 @@ def main():
                                 diagnosis = generate_diagnosis_and_recommendation(prompt)
                                 if diagnosis:
                                     insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
+                                    send_email("Generator Anomaly Alert", diagnosis)
                                 else:
                                     insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\nNo recommendations available.")
                             else:
