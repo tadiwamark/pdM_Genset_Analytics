@@ -12,7 +12,7 @@ import urllib.request
 from datetime import datetime, timedelta
 from queue import Queue
 from generator_script import generate_continuous_data
-from model_utils import detect_anomalies, generate_diagnosis_and_recommendation, generate_prompts_from_anomalies, inverse_transform, create_sequences, load_model_from_github, send_email, load_config
+from model_utils import detect_anomalies, generate_diagnosis_and_recommendation, generate_prompts_from_anomalies, inverse_transform, create_sequences, load_model_from_github, send_email
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 
@@ -35,7 +35,6 @@ discriminator_model.compile(optimizer=optimizer, loss=discriminator_loss)
 def main():
     st.title('FG Wilson Generator Monitoring Dashboard')
 
-    config = load_config('config.yaml')
 
     if not st.session_state.get('api_key'):
         st.session_state.api_key = st.sidebar.text_input("Enter your OpenAI API Key:")
@@ -66,7 +65,7 @@ def main():
 
     if st.session_state['generator_on']:
         start_time = datetime.now()
-        data_generator = generate_continuous_data(start_time, config)
+        data_generator = generate_continuous_data(start_time)
         simulated_data_df = pd.DataFrame()
         accumulated_data = []
         anomalies_timestamps = []
