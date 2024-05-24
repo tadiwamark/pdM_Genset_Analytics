@@ -8,24 +8,23 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class AnomalySimulator:
-    def __init__(self, config):
+    def __init__(self):
         self.anomaly_active = False
         self.anomaly_type = 'none'
         self.anomaly_start = None
         self.anomaly_duration = 0
         self.anomaly_progress = 0
-        self.config = config
 
     def start_anomaly(self):
         self.anomaly_type = np.random.choice(['electrical', 'temperature', 'pressure'],
-                                             p=self.config['anomaly_probabilities'])
+                                             p=[0.4, 0.3, 0.3])
         self.anomaly_duration = np.random.randint(10, 30)  # Anomaly duration in iterations
         self.anomaly_progress = 0
         self.anomaly_active = True
         logging.info(f"Starting anomaly: {self.anomaly_type} for {self.anomaly_duration} iterations")
 
     def simulate_anomalies(self, simulated_data):
-        if not self.anomaly_active and np.random.rand() < self.config['anomaly_start_probability']:
+        if not self.anomaly_active and np.random.rand() < 0.1:
             self.start_anomaly()
 
         if self.anomaly_active:
@@ -61,9 +60,9 @@ def generate_parameter_value(range_min, range_max, trend=0):
     return np.random.uniform(range_min, range_max) + trend
 
 
-def generate_continuous_data(start_time, config):
+def generate_continuous_data(start_time):
     logging.info(f"Generating data from {start_time} with interval 5 seconds")
-    anomaly_simulator = AnomalySimulator(config)
+    anomaly_simulator = AnomalySimulator()
     fuel_trend = 0
 
     while True:
