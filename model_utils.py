@@ -140,6 +140,12 @@ def download_and_load_scaler(url):
         print(f"Failed to download or load the scaler: {e}")
         return None
 
+# Load configuration from a YAML file
+def load_config(config_file):
+    with open(config_file, 'r') as file:
+        config = yaml.safe_load(file)
+    return config
+
 
 # Email alert function
 def send_email(subject, body):
