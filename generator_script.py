@@ -33,7 +33,7 @@ class AnomalySimulator:
             elif self.anomaly_type == 'temperature':
                 increase = progress_ratio * np.random.uniform(20, 70)
                 simulated_data['ExhaustTemp(°C)'] += increase
-                simulated_data['CoolantTemp(°C)'] += increase * 0.5  # Related parameter
+                simulated_data['CoolantTemp( °C)'] += increase * 0.5  # Related parameter
             elif self.anomaly_type == 'pressure':
                 factor = 1 - progress_ratio * np.random.uniform(0.2, 0.5)
                 simulated_data['inLetPressure(KPa)'] *= factor
