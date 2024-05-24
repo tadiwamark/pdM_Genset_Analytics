@@ -71,7 +71,7 @@ def generate_continuous_data(start_time):
             'inLetPressure(KPa)': generate_parameter_value(45, 75),
             'outLetPressure(KPa)': generate_parameter_value(45, 75),
             'OutLetAirTemp(°C)': generate_parameter_value(25, 30),
-            'CoolantTemp(°C)': generate_parameter_value(70, 85),
+            'CoolantTemp( °C)': generate_parameter_value(70, 85),
             'OilPressure(KPa)': generate_parameter_value(300, 360),
             'PowerFactor': generate_parameter_value(0.95, 1.0),
             'Speed(Rpm)': generate_parameter_value(1450, 1550),
