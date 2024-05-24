@@ -1,5 +1,0 @@
-anomaly_probabilities:
-  - 0.4  # Electrical
-  - 0.3  # Temperature
-  - 0.3  # Pressure
-anomaly_start_probability: 0.1
