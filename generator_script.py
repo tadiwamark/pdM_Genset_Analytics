@@ -90,4 +90,4 @@ def generate_continuous_data(start_time):
         yield simulated_df
 
         start_time = current_time
-        time.sleep(5)  # Keep interval at 5 seconds
+        time.sleep(1)  # Keep interval at 5 seconds
