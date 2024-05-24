@@ -14,7 +14,6 @@ import openai
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-import yaml
 
 
 # Model hyperparameters
@@ -140,12 +139,6 @@ def download_and_load_scaler(url):
     except Exception as e:
         print(f"Failed to download or load the scaler: {e}")
         return None
-
-# Load configuration from a YAML file
-def load_config(config_file):
-    with open(config_file, 'r') as file:
-        config = yaml.safe_load(file)
-    return config
 
 
 # Email alert function
