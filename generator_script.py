@@ -24,7 +24,7 @@ class AnomalySimulator:
         logging.info(f"Starting anomaly: {self.anomaly_type} for {self.anomaly_duration} iterations")
 
     def simulate_anomalies(self, simulated_data):
-        if not self.anomaly_active and np.random.rand() < 0.001:
+        if not self.anomaly_active and np.random.rand() < 0.1:
             self.start_anomaly()
 
         if self.anomaly_active:
