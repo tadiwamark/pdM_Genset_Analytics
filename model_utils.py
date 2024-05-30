@@ -45,9 +45,9 @@ def query_model(messages):
     """
     try:
         response = openai.ChatCompletion.create(
-            model="ft:gpt-3.5-turbo-1106:personal::8rMBgWJN",
+            model="ft:gpt-3.5-turbo-1106:personal::9Uh6HtIO",
             messages=messages,
-            temperature=0.7,
+            temperature=1.0,
             max_tokens=150,
             stop=None
         )
@@ -144,7 +144,7 @@ def download_and_load_scaler(url):
 # Email alert function
 def send_email(subject, body):
     sender_email = "pdm_genset_alerts_24@outlook.com"
-    receiver_email = "tadiwamark@gmail.com"
+    receiver_email = "tadiwanashe.nyaruwata@students.uz.ac.zw"
     password = "i^kbpbw7/3AVYA#"
     message = MIMEMultipart()
     message["From"] = sender_email
