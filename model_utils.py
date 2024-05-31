@@ -153,26 +153,26 @@ def send_email(subject, body):
         server.sendmail(sender_email, receiver_email, message.as_string())
 
 
-def check_anomaly_severity(data):
+def check_anomaly_severity(row):
     """
     Assess the severity of detected anomalies based on domain-specific features.
     """
     severity = 0
-    imbalance_current_threshold = 10  # Example threshold for imbalance current
-    pressure_ratio_threshold = 1.5    # Example threshold for pressure ratio
-    temp_gradient_threshold = 500      # Example threshold for temperature gradient
+    imbalance_current_threshold = 10
+    pressure_ratio_threshold = 1.5
+    temp_gradient_threshold = 50
 
-    if data['Imbalance_Current'] > imbalance_current_threshold:
+    if row['Imbalance_Current'] > imbalance_current_threshold:
         severity += 1
-    if data['Pressure_Ratio'] > pressure_ratio_threshold:
+    if row['Pressure_Ratio'] > pressure_ratio_threshold:
         severity += 1
-    if data['Temp_Gradient'] > temp_gradient_threshold:
+    if row['Temp_Gradient'] > temp_gradient_threshold:
         severity += 1
-    if data['Load_Factor'] > 0.8:  
+    if row['Load_Factor'] > 0.8:  # Example threshold for load factor
         severity += 1
-    if data['Power_Factor_Deviation'] > 0.1:  
+    if row['Power_Factor_Deviation'] > 0.1:  # Example threshold for power factor deviation
         severity += 1
-    
+
     return severity
 
 def filter_anomalies(anomalies_df):
