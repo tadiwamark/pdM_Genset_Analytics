@@ -153,35 +153,24 @@ def send_email(subject, body):
         server.sendmail(sender_email, receiver_email, message.as_string())
 
 
-def check_anomaly_severity(row):
+def calculate_severity(df):
     """
-    Assess the severity of detected anomalies based on domain-specific features.
+    Calculate severity scores for all rows in the DataFrame based on domain-specific thresholds.
     """
-    severity = 0
-    imbalance_current_threshold = 10.0000
-    pressure_ratio_threshold = 1.5000
-    temp_gradient_threshold = 500.0000
-
-    if row['Imbalance_Current'] > imbalance_current_threshold:
-        severity += 1
-    if row['Pressure_Ratio'] > pressure_ratio_threshold:
-        severity += 1
-    if row['Temp_Gradient'] > temp_gradient_threshold:
-        severity += 1
-    if row['Load_Factor'] > 0.8000:  # Example threshold for load factor
-        severity += 1
-    if row['Power_Factor_Deviation'] > 0.1000:  # Example threshold for power factor deviation
-        severity += 1
-
+    severity = pd.Series(0, index=df.index)
+    
+    severity += (df['Imbalance_Current'] > 10.00).astype(int)
+    severity += (df['Pressure_Ratio'] > 1.50).astype(int)
+    severity += (df['Temp_Gradient'] > 500.00).astype(int)
+    severity += (df['Load_Factor'] > 0.80).astype(int)
+    severity += (df['Power_Factor_Deviation'] > 0.10).astype(int)
+    
     return severity
 
 def filter_anomalies(anomalies_df):
     """
     Filter anomalies based on their severity.
     """
-    filtered_anomalies = []
-    for idx, row in anomalies_df.iterrows():
-        severity = check_anomaly_severity(row)
-        if severity >= 3:  
-            filtered_anomalies.append(row.to_dict())
-    return pd.DataFrame(filtered_anomalies)
+    severity_scores = calculate_severity(anomalies_df)
+    filtered_anomalies_df = anomalies_df[severity_scores >= 3]  
+    return filtered_anomalies_df
