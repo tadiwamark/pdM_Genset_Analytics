@@ -151,26 +151,3 @@ def send_email(subject, body):
         server.starttls()
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, message.as_string())
-
-
-def calculate_severity(df):
-    """
-    Calculate severity scores for all rows in the DataFrame based on domain-specific thresholds.
-    """
-    severity = pd.Series(0, index=df.index)
-    
-    severity += (df['Imbalance_Current'] > 10.00).astype(int)
-    severity += (df['Pressure_Ratio'] > 1.50).astype(int)
-    severity += (df['Temp_Gradient'] > 500.00).astype(int)
-    severity += (df['Load_Factor'] > 0.80).astype(int)
-    severity += (df['Power_Factor_Deviation'] > 0.10).astype(int)
-    
-    return severity
-
-def filter_anomalies(anomalies_df):
-    """
-    Filter anomalies based on their severity.
-    """
-    severity_scores = calculate_severity(anomalies_df)
-    filtered_anomalies_df = anomalies_df[severity_scores >= 3]  
-    return filtered_anomalies_df
