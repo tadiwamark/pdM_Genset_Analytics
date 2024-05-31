@@ -158,9 +158,9 @@ def check_anomaly_severity(row):
     Assess the severity of detected anomalies based on domain-specific features.
     """
     severity = 0
-    imbalance_current_threshold = 10
-    pressure_ratio_threshold = 1.5
-    temp_gradient_threshold = 50
+    imbalance_current_threshold = 10.0000
+    pressure_ratio_threshold = 1.5000
+    temp_gradient_threshold = 500.0000
 
     if row['Imbalance_Current'] > imbalance_current_threshold:
         severity += 1
@@ -168,9 +168,9 @@ def check_anomaly_severity(row):
         severity += 1
     if row['Temp_Gradient'] > temp_gradient_threshold:
         severity += 1
-    if row['Load_Factor'] > 0.8:  # Example threshold for load factor
+    if row['Load_Factor'] > 0.8000:  # Example threshold for load factor
         severity += 1
-    if row['Power_Factor_Deviation'] > 0.1:  # Example threshold for power factor deviation
+    if row['Power_Factor_Deviation'] > 0.1000:  # Example threshold for power factor deviation
         severity += 1
 
     return severity
