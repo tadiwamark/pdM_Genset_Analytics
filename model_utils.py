@@ -183,5 +183,5 @@ def filter_anomalies(anomalies_df):
     for idx, row in anomalies_df.iterrows():
         severity = check_anomaly_severity(row)
         if severity >= 3:  
-            filtered_anomalies.append(row)
+            filtered_anomalies.append(row.to_dict())
     return pd.DataFrame(filtered_anomalies)
