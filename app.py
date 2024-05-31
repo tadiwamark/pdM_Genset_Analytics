@@ -12,7 +12,7 @@ import urllib.request
 from datetime import datetime, timedelta
 from queue import Queue
 from generator_script import generate_continuous_data
-from model_utils import detect_anomalies, generate_diagnosis_and_recommendation, generate_prompts_from_anomalies, inverse_transform, create_sequences, load_model_from_github, send_email
+from model_utils import detect_anomalies, generate_diagnosis_and_recommendation, generate_prompts_from_anomalies, inverse_transform, create_sequences, load_model_from_github, send_email, filter_anomalies
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 
@@ -155,7 +155,9 @@ def main():
                         anomalies = scaled_data_seq[anomalies_indices]
                         anomalies_data = inverse_transform(anomalies.reshape(-1, features), scaler)
                         anomalies_df = pd.DataFrame(anomalies_data, columns=numeric_columns)
-                        anomaly_data = generate_prompts_from_anomalies(anomalies_df)
+                        filtered_anomalies_df = filter_anomalies(anomalies_df)
+                        
+                        anomaly_data = generate_prompts_from_anomalies(filtered_anomalies_df)
                         
                         for prompt in anomaly_data:
                             st.session_state.anomaly_queue.put(prompt)
