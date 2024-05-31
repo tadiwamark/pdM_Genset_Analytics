@@ -14,6 +14,7 @@ import openai
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import logging
 
 
 # Model hyperparameters
@@ -35,6 +36,7 @@ def detect_anomalies(generator, discriminator, scaled_data_seq, features, numeri
     # Identify real sequences that are classified as fake
     anomalies_indices = np.where(real_predictions.flatten() < threshold)[0]
     anomalies = scaled_data_seq[anomalies_indices]
+    logging.info(f"Detected {len(anomalies)} potential anomalies.")
     
     return anomalies, real_predictions, fake_predictions
 
