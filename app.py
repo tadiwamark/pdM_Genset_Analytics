@@ -153,6 +153,7 @@ def main():
                         
                         anomalies_indices = np.where(real_predictions < optimal_threshold)[0]
                         anomalies = scaled_data_seq[anomalies_indices]
+                        print(f"Detected {len(anomalies)} potential anomalies.")
                         anomalies_data = inverse_transform(anomalies.reshape(-1, features), scaler)
                         anomalies_df = pd.DataFrame(anomalies_data, columns=numeric_columns)
                         filtered_anomalies_df = filter_anomalies(anomalies_df)
