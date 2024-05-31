@@ -129,18 +129,6 @@ def load_model_from_github(url):
     return loaded_model
 
 
-def download_and_load_scaler(url):
-    try:
-        response = requests.get(url, stream=True)
-        response.raise_for_status()
-        with gzip.open(response.raw, 'rb') as gz:
-            scaler = pickle.load(gz)
-            return scaler  
-    except Exception as e:
-        print(f"Failed to download or load the scaler: {e}")
-        return None
-
-
 # Email alert function
 def send_email(subject, body):
     sender_email = "pdm_genset_alerts_24@outlook.com"
@@ -157,3 +145,37 @@ def send_email(subject, body):
         server.starttls()
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver_email, message.as_string())
+
+
+def check_anomaly_severity(data):
+    """
+    Assess the severity of detected anomalies based on domain-specific features.
+    """
+    severity = 0
+    imbalance_current_threshold = 10  # Example threshold for imbalance current
+    pressure_ratio_threshold = 1.5    # Example threshold for pressure ratio
+    temp_gradient_threshold = 500      # Example threshold for temperature gradient
+
+    if data['Imbalance_Current'] > imbalance_current_threshold:
+        severity += 1
+    if data['Pressure_Ratio'] > pressure_ratio_threshold:
+        severity += 1
+    if data['Temp_Gradient'] > temp_gradient_threshold:
+        severity += 1
+    if data['Load_Factor'] > 0.8:  
+        severity += 1
+    if data['Power_Factor_Deviation'] > 0.1:  
+        severity += 1
+    
+    return severity
+
+def filter_anomalies(anomalies_df):
+    """
+    Filter anomalies based on their severity.
+    """
+    filtered_anomalies = []
+    for idx, row in anomalies_df.iterrows():
+        severity = check_anomaly_severity(row)
+        if severity >= 3:  
+            filtered_anomalies.append(row)
+    return pd.DataFrame(filtered_anomalies)
