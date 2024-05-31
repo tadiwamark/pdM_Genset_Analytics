@@ -156,9 +156,8 @@ def main():
                         print(f"Detected {len(anomalies)} potential anomalies.")
                         anomalies_data = inverse_transform(anomalies.reshape(-1, features), scaler)
                         anomalies_df = pd.DataFrame(anomalies_data, columns=numeric_columns)
-                        filtered_anomalies_df = filter_anomalies(anomalies_df)
                         
-                        anomaly_data = generate_prompts_from_anomalies(filtered_anomalies_df)
+                        anomaly_data = generate_prompts_from_anomalies(anomalies_df)
                         
                         for prompt in anomaly_data:
                             st.session_state.anomaly_queue.put(prompt)
