@@ -145,7 +145,7 @@ def main():
 
 
 
-                    if len(accumulated_data) >= 15:  # Process data every 60 records (5 minutes assuming 5 sec interval)
+                    if len(accumulated_data) >= 60:  # Process data every 60 records (5 minutes assuming 5 sec interval)
                         optimal_threshold = 0.7
                         features = scaled_data.shape[1]
                         anomalies, real_predictions, fake_predictions = detect_anomalies(generator_model, discriminator_model, scaled_data_seq, features)
