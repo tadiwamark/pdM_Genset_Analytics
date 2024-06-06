@@ -25,7 +25,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 sequence_length = 10
 
 # Anomaly detection
-def detect_anomalies(generator, discriminator, scaled_data_seq, features, numerical_features, threshold=0.5):
+def detect_anomalies(generator, discriminator, scaled_data_seq, features, threshold=0.5):
     features = features  
     # Generate fake sequences
     batch_size = scaled_data_seq.shape[0]
