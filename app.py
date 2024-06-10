@@ -52,7 +52,7 @@ def main():
 
     if st.session_state["authentication_status"]:
         authenticator.logout("Logout", "sidebar")
-        st.sidebar.title(f"Welcome {name}")
+        st.write(f'Welcome *{st.session_state["name"]}*')
 
         if not st.session_state.get('api_key'):
             st.session_state.api_key = st.sidebar.text_input("Enter your OpenAI API Key:")
