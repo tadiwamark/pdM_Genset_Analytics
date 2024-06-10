@@ -17,7 +17,7 @@ class AnomalySimulator:
 
     def start_anomaly(self):
         self.anomaly_type = np.random.choice(['electrical', 'temperature', 'pressure'],
-                                             p=[0.1, 0.1, 0.8])
+                                             p=[0.4, 0.3, 0.3])
         self.anomaly_duration = np.random.randint(10, 30)  # Anomaly duration in iterations
         self.anomaly_progress = 0
         self.anomaly_active = True
