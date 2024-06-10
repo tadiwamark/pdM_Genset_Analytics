@@ -15,7 +15,9 @@ from generator_script import generate_continuous_data
 from model_utils import detect_anomalies, generate_diagnosis_and_recommendation, generate_prompts_from_anomalies, inverse_transform, create_sequences, load_model_from_github, send_email
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
-
+from authlib.integrations.requests_client import OAuth2Session
+from authlib.integrations.base_client.errors import OAuthError
+import logging
 
 # Paths to files
 generator_path = 'https://github.com/tadiwamark/pdM_Genset_Analytics/releases/download/gan/generator_model.h5'
@@ -30,11 +32,55 @@ discriminator_model = load_model_from_github(discriminator_path)
 generator_model.compile(optimizer=optimizer, loss=generator_loss)
 discriminator_model.compile(optimizer=optimizer, loss=discriminator_loss)
 
+# Configure logging
+logging.basicConfig(filename='user_activities.log', level=logging.INFO, format='%(asctime)s - %(message)s')
 
+# Google OAuth Configuration
+client_id = os.getenv('519855216781-go95f3lmmo0voqc9bnbf5ebppoa935sc.apps.googleusercontent.com')
+client_secret = os.getenv('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')
+redirect_uri = os.getenv('https://pdmgensetanalytics.streamlit.app/')
+
+authorization_endpoint = 'https://accounts.google.com/o/oauth2/auth'
+token_endpoint = 'https://oauth2.googleapis.com/token'
+userinfo_endpoint = 'https://www.googleapis.com/oauth2/v1/userinfo'
+
+def login_with_google():
+    client = OAuth2Session(client_id, client_secret, redirect_uri=redirect_uri, scope='openid email profile')
+    authorization_url, state = client.create_authorization_url(authorization_endpoint)
+    st.session_state.oauth_state = state
+    st.markdown(f'<a href="{authorization_url}" target="_self">Login with Google</a>', unsafe_allow_html=True)
+
+def fetch_token(client, code):
+    token = client.fetch_token(token_endpoint, authorization_response=code)
+    st.session_state.oauth_token = token
+
+def fetch_userinfo(client):
+    userinfo = client.get(userinfo_endpoint).json()
+    st.session_state.userinfo = userinfo
 
 def main():
     st.title('FG Wilson Generator Monitoring Dashboard')
 
+    if 'oauth_token' not in st.session_state:
+        st.session_state.oauth_token = None
+    if 'userinfo' not in st.session_state:
+        st.session_state.userinfo = None
+
+    if st.session_state.oauth_token and st.session_state.userinfo:
+        st.sidebar.success(f"Logged in as {st.session_state.userinfo['name']}")
+    else:
+        code = st.experimental_get_query_params().get('code')
+        if code:
+            try:
+                client = OAuth2Session(client_id, client_secret, redirect_uri=redirect_uri, scope='openid email profile')
+                fetch_token(client, code[0])
+                fetch_userinfo(client)
+                logging.info(f"User {st.session_state.userinfo['email']} logged in.")
+            except OAuthError as error:
+                st.error(f"OAuth error: {error}")
+        else:
+            login_with_google()
+            return
 
     if not st.session_state.get('api_key'):
         st.session_state.api_key = st.sidebar.text_input("Enter your OpenAI API Key:")
@@ -49,6 +95,7 @@ def main():
 
     if generator_state:
         st.session_state['generator_on'] = not st.session_state['generator_on']
+        logging.info(f"User {st.session_state.userinfo['email']} {'started' if st.session_state['generator_on'] else 'stopped'} the generator.")
 
     data_placeholder = st.empty()
     insights_placeholder = st.empty()
@@ -62,14 +109,12 @@ def main():
     if 'anomaly_queue' not in st.session_state:
         st.session_state.anomaly_queue = Queue()
 
-
     if st.session_state['generator_on']:
         start_time = datetime.now()
         data_generator = generate_continuous_data(start_time)
         simulated_data_df = pd.DataFrame()
         accumulated_data = []
         anomalies_timestamps = []
-
 
         while st.session_state['generator_on']:
             try:
