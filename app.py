@@ -19,6 +19,10 @@ import streamlit_authenticator as stauth
 from streamlit_authenticator.utilities.hasher import Hasher
 import yaml
 from yaml.loader import SafeLoader
+import logging
+
+# Set up logging
+logging.basicConfig(filename='user_activity.log', level=logging.INFO, format='%(asctime)s - %(message)s')
 
 with open('config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
@@ -51,6 +55,8 @@ def main():
     authenticator.login()
 
     if st.session_state["authentication_status"]:
+        user = st.session_state["username"]
+        logging.info(f"User {user} logged in.")
         authenticator.logout("Logout", "sidebar")
         st.write(f'Welcome *{st.session_state["name"]}*')
 
@@ -58,6 +64,7 @@ def main():
             st.session_state.api_key = st.sidebar.text_input("Enter your OpenAI API Key:")
             if st.session_state.api_key:
                 openai.api_key = st.session_state.api_key
+                logging.info(f"User {user} entered OpenAI API Key.")
 
         if st.session_state.get('api_key'):
             st.sidebar.title('Generator Controls')
@@ -68,6 +75,10 @@ def main():
 
             if generator_state:
                 st.session_state['generator_on'] = not st.session_state['generator_on']
+                if st.session_state['generator_on']:
+                    logging.info(f"User {user} started the generator.")
+                else:
+                    logging.info(f"User {user} stopped the generator.")
 
             data_placeholder = st.empty()
             insights_placeholder = st.empty()
@@ -157,7 +168,8 @@ def main():
                                 real_predictions = discriminator_model.predict(scaled_data_seq)
                                 anomalies_indices = np.where(real_predictions < optimal_threshold)[0]
                                 anomalies = scaled_data_seq[anomalies_indices]
-                                print(f"Detected {len(anomalies)} potential anomalies.")
+                                #print(f"Detected {len(anomalies)} potential anomalies.")
+                                logging.info(f"Detected {len(anomalies)} potential anomalies.")
                                 anomalies_data = inverse_transform(anomalies.reshape(-1, features), scaler)
                                 anomalies_df = pd.DataFrame(anomalies_data, columns=numeric_columns)
 
@@ -197,6 +209,7 @@ def main():
                 status_placeholder.warning("Generator is currently OFF. Use the sidebar to start the generator.")
     elif st.session_state["authentication_status"] is False:
         st.error('Username/password is incorrect')
+        logging.warning("Failed login attempt.")
     elif st.session_state["authentication_status"] is None:
         st.warning('Please enter your username and password')
 
