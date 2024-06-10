@@ -38,7 +38,7 @@ discriminator_model.compile(optimizer=optimizer, loss=discriminator_loss)
 logging.basicConfig(filename='user_activities.log', level=logging.INFO, format='%(asctime)s - %(message)s')
 
 # Authentication setup
-names = ['John Doe', 'Jane Smith']
+names = ['Tad Doe', 'Jane Smith']
 usernames = ['johndoe', 'janesmith']
 passwords = ['123', '456']  # Hash passwords using stauth.Hasher
 hashed_passwords = stauth.Hasher(passwords).generate()
@@ -66,26 +66,13 @@ def fetch_userinfo(client):
 def main():
     st.title('FG Wilson Generator Monitoring Dashboard')
 
-    if 'oauth_token' not in st.session_state:
-        st.session_state.oauth_token = None
-    if 'userinfo' not in st.session_state:
-        st.session_state.userinfo = None
+    name, authentication_status, username = authenticator.login('Login', 'main')
 
-    if st.session_state.oauth_token and st.session_state.userinfo:
-        st.sidebar.success(f"Logged in as {st.session_state.userinfo['name']}")
-    else:
-        code = st.experimental_get_query_params().get('code')
-        if code:
-            try:
-                client = OAuth2Session(client_id, client_secret, redirect_uri=redirect_uri, scope='openid email profile')
-                fetch_token(client, code[0])
-                fetch_userinfo(client)
-                logging.info(f"User {st.session_state.userinfo['email']} logged in.")
-            except OAuthError as error:
-                st.error(f"OAuth error: {error}")
-        else:
-            login_with_google()
-            return
+    if authentication_status:
+        authenticator.logout('Logout', 'sidebar')
+        st.sidebar.write(f'Welcome *{name}*')
+        logging.info(f"User {username} logged in.")
+
 
     if not st.session_state.get('api_key'):
         st.session_state.api_key = st.sidebar.text_input("Enter your OpenAI API Key:")
