@@ -33,14 +33,12 @@ generator_model.compile(optimizer=optimizer, loss=generator_loss)
 discriminator_model.compile(optimizer=optimizer, loss=discriminator_loss)
 
 # Authentication
-names = ["User1"]
 usernames = ["user1"]
 passwords = ["password"]
 
 hashed_passwords = Hasher(passwords).generate()
 
 authenticator = stauth.Authenticate(
-    names=names,
     usernames=usernames,
     passwords=hashed_passwords,
     cookie_name='some_cookie_name',
