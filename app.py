@@ -16,6 +16,8 @@ from model_utils import detect_anomalies, generate_diagnosis_and_recommendation,
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import streamlit_authenticator as stauth
+from streamlit_authenticator.utilities.hasher import Hasher
+
 
 # Paths to files
 generator_path = 'https://github.com/tadiwamark/pdM_Genset_Analytics/releases/download/gan/generator_model.h5'
