@@ -40,7 +40,7 @@ passwords = ['123','456']
 hashed_passwords = Hasher(passwords).generate()
 
 authenticator = stauth.Authenticate(names,usernames,hashed_passwords,
-    'some_cookie_name','some_signature_key',cookie_expiry_days=30)
+    'some_cookie_name','some_signature_key')
 
 def main():
     st.title('FG Wilson Generator Monitoring Dashboard')
