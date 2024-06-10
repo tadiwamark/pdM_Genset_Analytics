@@ -6,7 +6,6 @@ import time
 import urllib.request
 from transformer_encoder_block import TransformerEncoderBlock
 import gzip
-import requests
 import pickle
 import streamlit as st
 from sklearn.preprocessing import StandardScaler
