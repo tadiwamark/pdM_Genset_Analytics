@@ -43,23 +43,7 @@ hashed_passwords = stauth.Hasher(passwords).generate()
 
 authenticator = stauth.Authenticate(names, usernames, hashed_passwords, 'some_cookie_name', 'some_signature_key', cookie_expiry_days=30)
 
-authorization_endpoint = 'https://accounts.google.com/o/oauth2/auth'
-token_endpoint = 'https://oauth2.googleapis.com/token'
-userinfo_endpoint = 'https://www.googleapis.com/oauth2/v1/userinfo'
 
-def login_with_google():
-    client = OAuth2Session(client_id, client_secret, redirect_uri=redirect_uri, scope='openid email profile')
-    authorization_url, state = client.create_authorization_url(authorization_endpoint)
-    st.session_state.oauth_state = state
-    st.markdown(f'<a href="{authorization_url}" target="_self">Login with Google</a>', unsafe_allow_html=True)
-
-def fetch_token(client, code):
-    token = client.fetch_token(token_endpoint, authorization_response=code)
-    st.session_state.oauth_token = token
-
-def fetch_userinfo(client):
-    userinfo = client.get(userinfo_endpoint).json()
-    st.session_state.userinfo = userinfo
 
 def main():
     st.title('FG Wilson Generator Monitoring Dashboard')
