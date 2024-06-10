@@ -48,9 +48,9 @@ authenticator = stauth.Authenticate(
 def main():
     st.title('FG Wilson Generator Monitoring Dashboard')
 
-    name, authentication_status, username = authenticator.login()
+    authenticator.login()
 
-    if authentication_status:
+    if st.session_state["authentication_status"]:
         authenticator.logout("Logout", "sidebar")
         st.sidebar.title(f"Welcome {name}")
 
@@ -195,10 +195,10 @@ def main():
                 status_placeholder.success("Generator is currently ON.")
             else:
                 status_placeholder.warning("Generator is currently OFF. Use the sidebar to start the generator.")
-    elif authentication_status == False:
-        st.error("Username/password is incorrect")
-    elif authentication_status == None:
-        st.warning("Please enter your username and password")
+    elif st.session_state["authentication_status"] is False:
+        st.error('Username/password is incorrect')
+    elif st.session_state["authentication_status"] is None:
+        st.warning('Please enter your username and password')
 
 if __name__ == "__main__":
     main()
