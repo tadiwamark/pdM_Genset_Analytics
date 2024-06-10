@@ -17,6 +17,11 @@ from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import streamlit_authenticator as stauth
 from streamlit_authenticator.utilities.hasher import Hasher
+import yaml
+from yaml.loader import SafeLoader
+
+with open('config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
 
 
 # Paths to files
@@ -33,15 +38,13 @@ generator_model.compile(optimizer=optimizer, loss=generator_loss)
 discriminator_model.compile(optimizer=optimizer, loss=discriminator_loss)
 
 # Authentication
-names = ['John Smith','Rebecca Briggs']
-usernames = ['jsmith','rbriggs']
-passwords = ['123','456']
-
-hashed_passwords = Hasher(passwords).generate()
-
-authenticator = stauth.Authenticate(names,usernames,hashed_passwords,
-    'some_cookie_name','some_signature_key')
-
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+    config['pre-authorized']
+)
 def main():
     st.title('FG Wilson Generator Monitoring Dashboard')
 
