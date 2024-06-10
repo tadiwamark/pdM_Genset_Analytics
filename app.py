@@ -18,8 +18,6 @@ import matplotlib.pyplot as plt
 import logging
 import streamlit_authenticator as stauth
 
-# Load environment variables
-from dotenv import load_dotenv
 
 # Paths to files
 generator_path = 'https://github.com/tadiwamark/pdM_Genset_Analytics/releases/download/gan/generator_model.h5'
