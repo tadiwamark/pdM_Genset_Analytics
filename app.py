@@ -15,9 +15,11 @@ from generator_script import generate_continuous_data
 from model_utils import detect_anomalies, generate_diagnosis_and_recommendation, generate_prompts_from_anomalies, inverse_transform, create_sequences, load_model_from_github, send_email
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
-from authlib.integrations.requests_client import OAuth2Session
-from authlib.integrations.base_client.errors import OAuthError
 import logging
+import streamlit_authenticator as stauth
+
+# Load environment variables
+from dotenv import load_dotenv
 
 # Paths to files
 generator_path = 'https://github.com/tadiwamark/pdM_Genset_Analytics/releases/download/gan/generator_model.h5'
@@ -35,10 +37,13 @@ discriminator_model.compile(optimizer=optimizer, loss=discriminator_loss)
 # Configure logging
 logging.basicConfig(filename='user_activities.log', level=logging.INFO, format='%(asctime)s - %(message)s')
 
-# Google OAuth Configuration
-client_id = os.getenv('519855216781-go95f3lmmo0voqc9bnbf5ebppoa935sc.apps.googleusercontent.com')
-client_secret = os.getenv('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')
-redirect_uri = os.getenv('https://pdmgensetanalytics.streamlit.app/')
+# Authentication setup
+names = ['John Doe', 'Jane Smith']
+usernames = ['johndoe', 'janesmith']
+passwords = ['123', '456']  # Hash passwords using stauth.Hasher
+hashed_passwords = stauth.Hasher(passwords).generate()
+
+authenticator = stauth.Authenticate(names, usernames, hashed_passwords, 'some_cookie_name', 'some_signature_key', cookie_expiry_days=30)
 
 authorization_endpoint = 'https://accounts.google.com/o/oauth2/auth'
 token_endpoint = 'https://oauth2.googleapis.com/token'
