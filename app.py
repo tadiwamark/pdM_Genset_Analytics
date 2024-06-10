@@ -33,18 +33,14 @@ generator_model.compile(optimizer=optimizer, loss=generator_loss)
 discriminator_model.compile(optimizer=optimizer, loss=discriminator_loss)
 
 # Authentication
-usernames = ["user1"]
-passwords = ["password"]
+names = ['John Smith','Rebecca Briggs']
+usernames = ['jsmith','rbriggs']
+passwords = ['123','456']
 
 hashed_passwords = Hasher(passwords).generate()
 
-authenticator = stauth.Authenticate(
-    usernames=usernames,
-    passwords=hashed_passwords,
-    cookie_name='some_cookie_name',
-    key='some_signature_key',
-    cookie_expiry_days=30
-)
+authenticator = stauth.authenticate(names,usernames,hashed_passwords,
+    'some_cookie_name','some_signature_key',cookie_expiry_days=30)
 
 def main():
     st.title('FG Wilson Generator Monitoring Dashboard')
