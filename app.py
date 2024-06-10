@@ -39,7 +39,14 @@ passwords = ["password"]
 
 hashed_passwords = Hasher(passwords).generate()
 
-authenticator = stauth.Authenticate(names, usernames, hashed_passwords, 'some_cookie_name', 'some_signature_key', cookie_expiry_days=30)
+authenticator = stauth.Authenticate(
+    names=names,
+    usernames=usernames,
+    passwords=hashed_passwords,
+    cookie_name='some_cookie_name',
+    key='some_signature_key',
+    cookie_expiry_days=30
+)
 
 def main():
     st.title('FG Wilson Generator Monitoring Dashboard')
