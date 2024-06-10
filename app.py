@@ -140,7 +140,7 @@ def main():
                             ax3.set_xlabel('Time')
                             ax3.set_ylabel('Pressure (KPa)')
                             ax3.legend()
-                            for anomaly_time in anomalies_ttimestamps:
+                            for anomaly_time in anomalies_timestamps:
                                 ax3.axvline(anomaly_time, color='red', linestyle='--')
 
                             graph_placeholder3.pyplot(fig3)
