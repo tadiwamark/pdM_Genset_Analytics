@@ -106,9 +106,9 @@ def generate_prompts_from_anomalies(df):
     # Iterate over each row in the DataFrame
     for index, row in df.iterrows():
         # Build the prompt string by iterating over each column and its value in the row
-        prompt = ", ".join([f"{column} is {value}" for column, value in row.items()])
+        prompt = "Given the generator measurements: " + \ ", ".join([f"{column} is {value}" for column, value in row.items()])
         # Append the question about potential issues and recommended actions
-        prompt += " what are the potential issues and recommended actions?"
+        prompt = prompt + ", what are the potential issues and recommended actions?"
         # Append the complete prompt to the list
         anomaly_prompts.append(prompt)
         
