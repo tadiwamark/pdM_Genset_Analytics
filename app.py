@@ -48,7 +48,7 @@ authenticator = stauth.Authenticate(
 def main():
     st.title('FG Wilson Generator Monitoring Dashboard')
 
-    name, authentication_status, username = authenticator.login("Login", "main")
+    name, authentication_status, username = authenticator.login()
 
     if authentication_status:
         authenticator.logout("Logout", "sidebar")
