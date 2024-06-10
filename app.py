@@ -4,7 +4,6 @@ import pandas as pd
 import numpy as np
 import time
 from keras.models import load_model
-import requests
 import pickle
 import openai
 import os
