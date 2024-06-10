@@ -46,8 +46,7 @@ authenticator = stauth.Authenticate(
     config['credentials'],
     config['cookie']['name'],
     config['cookie']['key'],
-    config['cookie']['expiry_days'],
-    config['pre-authorized']
+    config['cookie']['expiry_days']
 )
 def main():
     st.title('FG Wilson Generator Monitoring Dashboard')
