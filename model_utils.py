@@ -74,7 +74,7 @@ def generate_diagnosis_and_recommendation(anomaly_data):
     """
     if openai.api_key:
       conversation = [
-          {"role": "system", "content": "You are Jenny a generator expert who interprets generator data anomalies and gives us her expert recommendations."},
+          {"role": "system", "content": "You are an AI model specialized in anomaly detection and interpretation for generator data. Your task is to analyze provided anomaly data, interpret the underlying issues, and generate detailed, actionable recommendations for maintenance and improvement. Use clear, concise language and ensure your advice is practical and relevant to the context of the detected anomalies. Consider historical patterns, potential causes, and preventative measures in your recommendations."},
           {"role": "user", "content": f"Given the generator measurements: {anomaly_data}, what are the potential issues and recommended actions?"}
       ]
       try:
@@ -106,8 +106,7 @@ def generate_prompts_from_anomalies(df):
     # Iterate over each row in the DataFrame
     for index, row in df.iterrows():
         # Build the prompt string by iterating over each column and its value in the row
-        prompt = "Given the generator measurements: " + \
-                 ", ".join([f"{column} is {value}" for column, value in row.items()])
+        prompt = ", ".join([f"{column} is {value}" for column, value in row.items()])
         # Append the question about potential issues and recommended actions
         prompt = prompt + ", what are the potential issues and recommended actions?"
         # Append the complete prompt to the list
