@@ -2,7 +2,7 @@
 
 ## Project Description
 
-This project is a Streamlit application designed to monitor and analyze real-time data from Industrial Internet of Things (IIoT) devices, specifically focusing on generator data. The application uses an anomaly detection model to identify anomalies in the data and a finetuned GPT-3.5 Turbo model to interpret these anomalies and generate actionable recommendations.
+This project is a Streamlit application designed to monitor and analyze real-time data from Industrial Internet of Things (IIoT) devices, specifically focusing on generator data. The application uses an anomaly detection model to identify anomalies in the data and a finetuned GPT-40 model to interpret these anomalies and generate actionable recommendations.
 
 Link to app: https://pdmgensetanalytics.streamlit.app/
 
