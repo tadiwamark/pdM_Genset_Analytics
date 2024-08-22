@@ -10,7 +10,7 @@ Link to app: https://pdmgensetanalytics.streamlit.app/
 
 - Real-time data generation and monitoring
 - Anomaly detection using a custom-trained model
-- Interpretation of anomalies using GPT-3.5 Turbo
+- Interpretation of anomalies using GPT4o
 - Visual representation of generator data
 - Insight generation and display
 - Email alerts for detected anomalies
