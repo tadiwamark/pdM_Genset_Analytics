@@ -59,7 +59,7 @@ def generate_parameter_value(range_min, range_max, trend=0):
     and rounds the result to one decimal place.
     """
     value = np.random.uniform(range_min, range_max) + trend
-    return round(value, 1)
+    return round(value)
 
 def generate_continuous_data(start_time):
     logging.info(f"Generating data from {start_time} with interval 5 seconds")
