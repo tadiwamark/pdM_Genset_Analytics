@@ -55,10 +55,11 @@ class AnomalySimulator:
 
 def generate_parameter_value(range_min, range_max, trend=0):
     """
-    Generates a random parameter value, optionally adjusted by a trend factor.
+    Generates a random parameter value, optionally adjusted by a trend factor,
+    and rounds the result to one decimal place.
     """
-    return np.random.uniform(range_min, range_max) + trend
-
+    value = np.random.uniform(range_min, range_max) + trend
+    return round(value, 1)
 
 def generate_continuous_data(start_time):
     logging.info(f"Generating data from {start_time} with interval 5 seconds")
