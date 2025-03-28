@@ -176,7 +176,7 @@ def main():
                                 diagnosis = generate_diagnosis_and_recommendation(prompt)
                                 if diagnosis:
                                     insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\n{diagnosis}")
-                                    send_email("Generator Anomaly Alert", diagnosis)
+                                    #send_email("Generator Anomaly Alert", diagnosis)
                                 else:
                                     insights_placeholder.markdown(f"## Insights\n- **Model Diagnosis and Recommendation:**\nNo response from model, check if you put a correct and valid OpenAI Key.")
                             else:
